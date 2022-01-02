@@ -5,7 +5,7 @@ import FoundationNetworking
 #endif
 
 /// Position in the collection's pagination.
-public struct Page: Codable, Equatable {
+public struct Page: Codable, Hashable {
     /// Maximum number of results delivered for a single page in the collection.
     public var perPageCount: Int
     /// The URL of the previous page of results.
@@ -60,7 +60,7 @@ public struct Page: Codable, Equatable {
 }
 
 /// Paging options used for pagination.
-public struct PageOptions: Equatable {
+public struct PageOptions: Hashable {
     /// The ID after which to continue pagination.
     public var id: Int
 

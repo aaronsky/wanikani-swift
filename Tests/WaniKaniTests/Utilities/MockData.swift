@@ -6,12 +6,12 @@ import FoundationNetworking
 #endif
 
 struct MockResources {
-    struct Body: Codable, Equatable {
+    struct Body: Codable, Hashable {
         var name: String
         var age: Int
     }
 
-    struct Content: Codable, Equatable {
+    struct Content: Codable, Hashable {
         var name: String
         var age: Int
     }

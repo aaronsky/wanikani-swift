@@ -89,7 +89,7 @@ public struct User: ModelProtocol {
     }
 
     /// User's preferences for WaniKani behavior. Clients should use these where relevant to ensure consistency in the WaniKani experience.
-    public struct Preferences: Codable, Equatable {
+    public struct Preferences: Codable, Hashable {
         /// Automatically play pronunciation audio for vocabulary during lessons.
         public var autoplayLessonsAudio: Bool
         /// Automatically play pronunciation audio for vocabulary during reviews.
@@ -105,7 +105,7 @@ public struct User: ModelProtocol {
         /// The default (and best experience) is ``PresentationOrder/ascendingLevelThenSubject``.
         public var lessonsPresentationOrder: PresentationOrder
 
-        public enum PresentationOrder: String, Codable, Equatable {
+        public enum PresentationOrder: String, Codable, Hashable {
             case ascendingLevelThenSubject = "ascending_level_then_subject"
             case shuffled
             case ascendingLevelThenShuffled = "ascending_level_then_shuffled"
@@ -122,7 +122,7 @@ public struct User: ModelProtocol {
     }
 
     /// Subscription status
-    public struct Subscription: Codable, Equatable {
+    public struct Subscription: Codable, Hashable {
         /// Whether or not the user currently has a paid subscription.
         public var isActive: Bool
         /// The maximum level of content accessible to the user for lessons, reviews, and content review. For unsubscribed/free users, the maximum level is `3`. For subscribed users, this is `60`. **Any application that uses data from the WaniKani API must respect these access limits.**
@@ -133,7 +133,7 @@ public struct User: ModelProtocol {
         public var type: Kind
 
         /// The kind of subscription
-        public enum Kind: String, Codable, Equatable {
+        public enum Kind: String, Codable, Hashable {
             /// The user subscription state isn't known. This is a weird state on WaniKani, should be treated as ``free``, and reported to the WaniKani developers.
             case unknown
             /// Represents people who've never subscribed or have an inactive subscription, so it isn't really a subscription. There's no ``User/Subscription-swift.struct/periodEnds`` for free subscriptions.

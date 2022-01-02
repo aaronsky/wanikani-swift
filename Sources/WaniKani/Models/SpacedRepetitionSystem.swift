@@ -103,7 +103,7 @@ public struct SpacedRepetitionSystem: ModelProtocol {
     }
 
     /// The unlocking (position 0) and burning (maximum position) will always have `null` for ``interval`` and ``intervalUnit`` since the stages do not influence ``Assignment/available``. Stages in between the unlocking and burning stages are the “reviewable” stages.
-    public struct Stage: Codable, Equatable {
+    public struct Stage: Codable, Hashable {
         /// The length of time added to the time of review registration, adjusted to the beginning of the hour.
         public var interval: Int?
         /// Unit of time. Can be the following: `milliseconds`, `seconds`, `minutes`, `hours`, `days`, or `weeks`.

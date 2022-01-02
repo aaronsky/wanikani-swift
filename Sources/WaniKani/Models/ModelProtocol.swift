@@ -1,7 +1,7 @@
 import Foundation
 
 /// Shared properties between all top-level model types.
-public protocol ModelProtocol: Codable, Equatable {
+public protocol ModelProtocol: Codable, Hashable, Identifiable {
     associatedtype ID: Codable = Int
 
     /// The kind of object returned. See the object types section below for all the kinds.

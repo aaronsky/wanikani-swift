@@ -61,7 +61,7 @@ public struct Summary: ModelProtocol {
         try container.encode(reviews, forKey: .reviews)
     }
 
-    public struct Lesson: Codable, Equatable {
+    public struct Lesson: Codable, Hashable {
         /// When the paired ``subjectIDs`` are available for lessons. Always beginning of the current hour when the API endpoint is accessed.
         public var available: Date
         /// Collection of unique identifiers for ``Subject``s.
@@ -73,7 +73,7 @@ public struct Summary: ModelProtocol {
         }
     }
 
-    public struct Review: Codable, Equatable {
+    public struct Review: Codable, Hashable {
         /// When the paired ``subjectIDs`` are available for reviews. All timestamps are the top of an hour.
         public var available: Date
         /// Collection of unique identifiers for ``Subject``s.

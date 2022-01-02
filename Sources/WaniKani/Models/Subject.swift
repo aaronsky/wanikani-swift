@@ -111,7 +111,7 @@ public enum Subject: ModelProtocol {
     }
 
     /// The supported kinds of subjects.
-    public enum Kind: String, Codable, Equatable {
+    public enum Kind: String, Codable, Hashable {
         case radical
         case kanji
         case vocabulary
@@ -246,7 +246,7 @@ extension Subject: SubjectProtocol {
     }
 }
 
-public struct Meaning: Codable, Equatable {
+public struct Meaning: Codable, Hashable {
     /// A singular subject meaning.
     public var meaning: String
     /// Indicates priority in the WaniKani system.
@@ -261,13 +261,13 @@ public struct Meaning: Codable, Equatable {
     }
 }
 
-public struct AuxiliaryMeaning: Codable, Equatable {
+public struct AuxiliaryMeaning: Codable, Hashable {
     /// A singular subject meaning.
     public var meaning: String
     /// When evaluating user input, allowlisted meanings are used to match for correctness. Blocklisted meanings are used to match for incorrectness.
     public var type: Kind
 
-    public enum Kind: String, Codable, Equatable {
+    public enum Kind: String, Codable, Hashable {
         case allowlist = "whitelist"
         case blocklist = "blacklist"
     }
@@ -386,7 +386,7 @@ public struct Radical: ModelProtocol, SubjectProtocol {
         try container.encode(spacedRepetitionSystemID, forKey: .spacedRepetitionSystemID)
     }
 
-    public struct CharacterImage: Codable, Equatable {
+    public struct CharacterImage: Codable, Hashable {
         /// The location of the image.
         public var url: URL
         /// The content type of the image. Currently the WaniKani system delivers `image/png` and `image/svg+xml`.
@@ -430,11 +430,11 @@ public struct Radical: ModelProtocol, SubjectProtocol {
             }
         }
 
-        public enum Metadata: Codable, Equatable {
+        public enum Metadata: Codable, Hashable {
             case svg(SVG)
             case png(PNG)
 
-            public struct SVG: Codable, Equatable {
+            public struct SVG: Codable, Hashable {
                 /// The SVG asset contains built-in CSS styling.
                 public var containsInlineStyles: Bool
 
@@ -443,7 +443,7 @@ public struct Radical: ModelProtocol, SubjectProtocol {
                 }
             }
 
-            public struct PNG: Codable, Equatable {
+            public struct PNG: Codable, Hashable {
                 /// Color of the asset in hexadecimal.
                 public var color: String
                 // FIXME: WxH as string, or CGSize?
@@ -626,7 +626,7 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
         try container.encode(visuallySimilarSubjectIDs, forKey: .visuallySimilarSubjectIDs)
     }
 
-    public struct Reading: Codable, Equatable {
+    public struct Reading: Codable, Hashable {
         /// A singular subject reading.
         public var reading: String
         /// Indicates priority in the WaniKani system.
@@ -636,7 +636,7 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
         /// The kanji reading's classfication.
         public var type: Kind
 
-        public enum Kind: String, Codable, Equatable {
+        public enum Kind: String, Codable, Hashable {
             case kunyomi
             case nanori
             case onyomi
@@ -809,27 +809,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         try container.encode(spacedRepetitionSystemID, forKey: .spacedRepetitionSystemID)
     }
 
-    private enum CodingKeys: String, CodingKey {
-        case auxiliaryMeanings = "auxiliary_meanings"
-        case characters
-        case componentSubjectIDs = "component_subject_ids"
-        case contextSentences = "context_sentences"
-        case created = "created_at"
-        case documentURL = "document_url"
-        case hidden = "hidden_at"
-        case lessonPosition = "lesson_position"
-        case level
-        case meaningMnemonic = "meaning_mnemonic"
-        case meanings
-        case partsOfSpeech = "parts_of_speech"
-        case pronunciationAudios = "pronunciation_audios"
-        case readings
-        case readingMnemonic = "reading_mnemonic"
-        case slug
-        case spacedRepetitionSystemID = "spaced_repetition_system_id"
-    }
-
-    public struct ContextSentence: Codable, Equatable {
+    public struct ContextSentence: Codable, Hashable {
         public var englishSentence: String
         public var japaneseSentence: String
 
@@ -839,7 +819,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         }
     }
 
-    public struct PronunciationAudio: Codable, Equatable {
+    public struct PronunciationAudio: Codable, Hashable {
         /// The location of the audio.
         public var url: URL
         /// The content type of the audio. Currently the API delivers `audio/mpeg` and `audio/ogg`.
@@ -847,7 +827,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         /// Details about the pronunciation audio.
         public var metadata: Metadata
 
-        public struct Metadata: Codable, Equatable {
+        public struct Metadata: Codable, Hashable {
             /// The gender of the voice actor.
             public var gender: String
             /// A unique ID shared between same source pronunciation audio.
@@ -878,7 +858,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         }
     }
 
-    public struct Reading: Codable, Equatable {
+    public struct Reading: Codable, Hashable {
         /// A singular subject reading.
         public var reading: String
         /// Indicates priority in the WaniKani system.
@@ -891,5 +871,25 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
             case isPrimary = "primary"
             case isAcceptedAnswer = "accepted_answer"
         }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case auxiliaryMeanings = "auxiliary_meanings"
+        case characters
+        case componentSubjectIDs = "component_subject_ids"
+        case contextSentences = "context_sentences"
+        case created = "created_at"
+        case documentURL = "document_url"
+        case hidden = "hidden_at"
+        case lessonPosition = "lesson_position"
+        case level
+        case meaningMnemonic = "meaning_mnemonic"
+        case meanings
+        case partsOfSpeech = "parts_of_speech"
+        case pronunciationAudios = "pronunciation_audios"
+        case readings
+        case readingMnemonic = "reading_mnemonic"
+        case slug
+        case spacedRepetitionSystemID = "spaced_repetition_system_id"
     }
 }
