@@ -8,8 +8,7 @@ import FoundationNetworking
 
 extension Summary {
     init() {
-        self.init(id: 0,
-                  lessons: [
+        self.init(lessons: [
                     Summary.Lesson(available: Date(timeIntervalSince1970: 1000),
                                    subjectIDs: [1, 2])
                   ],

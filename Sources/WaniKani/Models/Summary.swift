@@ -3,8 +3,8 @@ import Foundation
 /// The summary report contains currently available lessons and reviews and the reviews that will become available in the next 24 hours, grouped by the hour.
 public struct Summary: ModelProtocol {
     public let object = "report"
+    public let id: Int = 0
 
-    public var id: Int
     public var lastUpdated: Date?
     /// Details about subjects available for lessons.
     public var lessons: [Lesson]
@@ -15,14 +15,12 @@ public struct Summary: ModelProtocol {
     public var url: URL
 
     init(
-        id: Int,
         lastUpdated: Date? = nil,
         lessons: [Summary.Lesson],
         nextReviews: Date? = nil,
         reviews: [Summary.Review],
         url: URL
     ) {
-        self.id = id
         self.lastUpdated = lastUpdated
         self.lessons = lessons
         self.nextReviews = nextReviews
@@ -39,7 +37,6 @@ public struct Summary: ModelProtocol {
                                                                               debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
         }
 
-        id = try modelContainer.decode(Int.self, forKey: .id)
         lastUpdated = try modelContainer.decodeIfPresent(Date.self, forKey: .lastUpdated)
         url = try modelContainer.decode(URL.self, forKey: .url)
 
