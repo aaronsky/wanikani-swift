@@ -17,7 +17,7 @@ print(reviews)
 
 ## Usage
 
-[Getting Started](./Sources/WaniKani/Documentation.docc/Articles/GettingStarted.md)
+[Getting Started](./Sources/WaniKani/WaniKani.docc/Articles/GettingStarted.md)
 
 ## References
 
