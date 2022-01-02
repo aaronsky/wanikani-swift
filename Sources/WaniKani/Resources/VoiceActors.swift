@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public enum VoiceActors {
     /// Returns a collection of all ``VoiceActor``s, ordered by ascending creation date, 500 at a time.
     public struct List: Resource {

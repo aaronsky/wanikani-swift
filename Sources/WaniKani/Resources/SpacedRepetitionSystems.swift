@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public enum SpacedRepetitionSystems {
     /// Returns a collection of all ``SpacedRepetitionSystem``, ordered by ascending `id`, 500 at a time.
     public struct List: Resource {

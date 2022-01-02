@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 /// Defines a request to WaniKani.
 public protocol Resource {
     /// The data the resource is expected to send alongside.

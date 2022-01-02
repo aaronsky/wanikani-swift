@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public enum Users {
     /// Returns a summary of user information for the currently authenticated user.
     public struct Me: Resource {

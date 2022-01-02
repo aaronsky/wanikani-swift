@@ -1,6 +1,6 @@
 # WaniKani
 
-![Build Status](https://github.com/aaronsky/wanikani-swift/workflows/CI/badge.svg)
+![Build Status](https://github.com/aaronsky/wanikani-swift/workflows/build/badge.svg)
 
 A Swift library and client for the WaniKani REST API. It currently supports **Version 2 Revision 20170710** of the API.
 

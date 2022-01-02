@@ -1,5 +1,3 @@
-import Foundation
-
 // TODO: Markup helpers
 /*
  One or many of these attributes can be present in radical, kanji, and vocabulary:

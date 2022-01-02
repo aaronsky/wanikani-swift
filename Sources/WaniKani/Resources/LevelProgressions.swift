@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public enum LevelProgressions {
     /// The collection of ``LevelProgression``s will be filtered on the parameters provided.
     public struct List: Resource {

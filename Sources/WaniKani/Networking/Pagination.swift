@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 /// Position in the collection's pagination.
 public struct Page: Codable, Equatable {
     /// Maximum number of results delivered for a single page in the collection.

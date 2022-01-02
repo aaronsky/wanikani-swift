@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public enum Assignments {
     /// Returns a collection of all assignments, ordered by ascending creation date, 500 at a time.
     public struct List: Resource {

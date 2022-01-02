@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public enum Summaries {
     /// Retrieves a summary report.
     public struct Get: Resource {
