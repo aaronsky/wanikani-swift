@@ -8,7 +8,7 @@ import FoundationNetworking
 
 extension User {
     init() {
-        self.init(id: 0,
+        self.init(id: UUID(),
                   level: 1,
                   preferences: Preferences(autoplayLessonsAudio: false,
                                            autoplayReviewsAudio: false,

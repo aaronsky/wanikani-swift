@@ -6,7 +6,7 @@ public struct User: ModelProtocol {
 
     /// If the user is on vacation, this will be the timestamp of when that vacation started. If the user is not on vacation, this is `null`.
     public var currentVacationStarted: Date?
-    public var id: Int
+    public var id: UUID
     public var lastUpdated: Date?
     /// The current level of the user. This ignores subscription status.
     public var level: Int
@@ -24,7 +24,7 @@ public struct User: ModelProtocol {
 
     init(
         currentVacationStarted: Date? = nil,
-        id: Int,
+        id: UUID,
         lastUpdated: Date? = nil,
         level: Int,
         preferences: User.Preferences,
@@ -55,13 +55,13 @@ public struct User: ModelProtocol {
                                                                               debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
         }
 
-        id = try modelContainer.decode(Int.self, forKey: .id)
         lastUpdated = try modelContainer.decodeIfPresent(Date.self, forKey: .lastUpdated)
         url = try modelContainer.decode(URL.self, forKey: .url)
 
         let container = try modelContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
 
         currentVacationStarted = try container.decodeIfPresent(Date.self, forKey: .currentVacationStarted)
+        id = try container.decode(UUID.self, forKey: .id)
         level = try container.decode(Int.self, forKey: .level)
         preferences = try container.decode(Preferences.self, forKey: .preferences)
         profileURL = try container.decode(URL.self, forKey: .profileURL)
@@ -73,13 +73,13 @@ public struct User: ModelProtocol {
     public func encode(to encoder: Encoder) throws {
         var modelContainer = encoder.container(keyedBy: ModelCodingKeys.self)
 
-        try modelContainer.encode(id, forKey: .id)
         try modelContainer.encode(object, forKey: .object)
         try modelContainer.encodeIfPresent(lastUpdated, forKey: .lastUpdated)
         try modelContainer.encode(url, forKey: .url)
 
         var container = modelContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
         try container.encode(currentVacationStarted, forKey: .currentVacationStarted)
+        try container.encode(id, forKey: .id)
         try container.encode(level, forKey: .level)
         try container.encode(preferences, forKey: .preferences)
         try container.encode(profileURL, forKey: .profileURL)
@@ -154,6 +154,7 @@ public struct User: ModelProtocol {
 
     private enum CodingKeys: String, CodingKey {
         case currentVacationStarted = "current_vacation_started_at"
+        case id
         case level
         case preferences
         case profileURL = "profile_url"

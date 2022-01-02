@@ -2,6 +2,8 @@ import Foundation
 
 /// Shared properties between all top-level model types.
 public protocol ModelProtocol: Codable, Equatable {
+    associatedtype ID: Codable = Int
+
     /// The kind of object returned. See the object types section below for all the kinds.
     var object: String { get }
 
@@ -16,7 +18,7 @@ public protocol ModelProtocol: Codable, Equatable {
     var lastUpdated: Date? { get }
 
     /// Resource ID
-    var id: Int { get }
+    var id: ID { get }
 }
 
 enum ModelCodingKeys: String, CodingKey {
