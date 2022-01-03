@@ -22,6 +22,7 @@ extension WaniKani {
 
         public func transformRequest(_ request: inout URLRequest) {
             request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
+            request.setValue(URLRequest.applicationJSONHeaderValue, forHTTPHeaderField: "Accept")
             request.addValue(version.revision, forHTTPHeaderField: "Wanikani-Revision")
             if let token = token {
                 request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

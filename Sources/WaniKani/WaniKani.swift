@@ -58,8 +58,22 @@ public class WaniKani {
     ///   - resource: The resource object, which describes how to perform the request
     ///   - pageOptions: Options for pagination, which are ignored by resources that do not involve pagination.
     public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R> where R: Resource, R.Content: Decodable {
-        let decoder = self.decoder
         let request = try URLRequest(resource, pageOptions: pageOptions, configuration: configuration)
+        return try await send(request: request)
+    }
+
+    /// Sends a resource to WaniKani and responds accordingly.
+    ///
+    /// - Parameters:
+    ///   - resource: The resource object, which describes how to perform the request
+    ///   - pageOptions: Options for pagination, which are ignored by resources that do not involve pagination.
+    public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R> where R: Resource, R.Body: Encodable, R.Content: Decodable {
+        let request = try URLRequest(resource, pageOptions: pageOptions, configuration: configuration, encoder: encoder)
+        return try await send(request: request)
+    }
+
+    private func send<R>(request: URLRequest) async throws -> Response<R> where R: Resource, R.Content: Decodable {
+        let decoder = self.decoder
 
         let (data, response) = try await transport.send(request: request)
         try checkResponseForIssues(response, data: data, decoder: decoder)

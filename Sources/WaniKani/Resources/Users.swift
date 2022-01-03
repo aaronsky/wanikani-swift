@@ -56,17 +56,19 @@ public enum Users {
 
             public func encode(to encoder: Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
-                var body = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .user)
-                try body.encodeIfPresent(defaultVoiceActorID, forKey: .defaultVoiceActorID)
-                try body.encodeIfPresent(lessonsAutoplayAudio, forKey: .lessonsAutoplayAudio)
-                try body.encodeIfPresent(lessonsBatchSize, forKey: .lessonsBatchSize)
-                try body.encodeIfPresent(lessonsPresentationOrder, forKey: .lessonsPresentationOrder)
-                try body.encodeIfPresent(reviewsAutoplayAudio, forKey: .reviewsAutoplayAudio)
-                try body.encodeIfPresent(reviewsDisplaySRSIndicator, forKey: .reviewsDisplaySRSIndicator)
+                var user = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .user)
+                var preferences = user.nestedContainer(keyedBy: CodingKeys.self, forKey: .preferences)
+                try preferences.encodeIfPresent(defaultVoiceActorID, forKey: .defaultVoiceActorID)
+                try preferences.encodeIfPresent(lessonsAutoplayAudio, forKey: .lessonsAutoplayAudio)
+                try preferences.encodeIfPresent(lessonsBatchSize, forKey: .lessonsBatchSize)
+                try preferences.encodeIfPresent(lessonsPresentationOrder, forKey: .lessonsPresentationOrder)
+                try preferences.encodeIfPresent(reviewsAutoplayAudio, forKey: .reviewsAutoplayAudio)
+                try preferences.encodeIfPresent(reviewsDisplaySRSIndicator, forKey: .reviewsDisplaySRSIndicator)
             }
 
             private enum CodingKeys: String, CodingKey {
                 case user
+                case preferences
                 case defaultVoiceActorID = "default_voice_actor_id"
                 case lessonsAutoplayAudio = "lessons_autoplay_audio"
                 case lessonsBatchSize = "lessons_batch_size"
