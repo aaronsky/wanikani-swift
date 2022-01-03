@@ -87,7 +87,7 @@ public struct Summary: ModelProtocol {
 
     private enum CodingKeys: String, CodingKey {
         case lessons
-        case nextReviews = "next_reviews"
+        case nextReviews = "next_reviews_at"
         case reviews
     }
 }
