@@ -28,8 +28,7 @@ public enum StudyMaterials {
                       return
                   }
 
-            var queryItems: [URLQueryItem] = []
-
+            var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(isHidden, forKey: "hidden")
             queryItems.appendIfNeeded(ids, forKey: "ids")
             queryItems.appendIfNeeded(subjectIDs, forKey: "subject_ids")

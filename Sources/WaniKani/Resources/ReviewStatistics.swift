@@ -32,8 +32,7 @@ public enum ReviewStatistics {
                       return
                   }
 
-            var queryItems: [URLQueryItem] = []
-
+            var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(isHidden, forKey: "hidden")
             queryItems.appendIfNeeded(ids, forKey: "ids")
             queryItems.appendIfNeeded(percentagesGreaterThan, forKey: "percentages_greater_than")

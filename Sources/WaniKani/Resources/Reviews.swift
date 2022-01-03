@@ -26,8 +26,7 @@ public enum Reviews {
                       return
                   }
 
-            var queryItems: [URLQueryItem] = []
-
+            var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(assignmentIDs, forKey: "assignment_ids")
             queryItems.appendIfNeeded(ids, forKey: "ids")
             queryItems.appendIfNeeded(subjectIDs, forKey: "subject_ids")

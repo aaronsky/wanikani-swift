@@ -31,8 +31,7 @@ public enum Subjects {
                       return
                   }
 
-            var queryItems: [URLQueryItem] = []
-
+            var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(ids, forKey: "ids")
             queryItems.appendIfNeeded(types, forKey: "types")
             queryItems.appendIfNeeded(slugs, forKey: "slugs")

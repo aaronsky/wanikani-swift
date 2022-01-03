@@ -48,7 +48,7 @@ public enum Assignments {
                       return
                   }
 
-            var queryItems: [URLQueryItem] = []
+            var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(availableAfter, forKey: "available_after")
             queryItems.appendIfNeeded(availableBefore, forKey: "available_before")
             queryItems.appendIfNeeded(isBurned, forKey: "burned")

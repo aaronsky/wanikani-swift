@@ -22,8 +22,7 @@ public enum Resets {
                       return
                   }
 
-            var queryItems: [URLQueryItem] = []
-
+            var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(ids, forKey: "ids")
             queryItems.appendIfNeeded(updatedAfter, forKey: "updated_after")
             components.queryItems = queryItems
