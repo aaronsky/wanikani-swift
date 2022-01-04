@@ -19,7 +19,7 @@ client.token = "..." // Your WaniKani API access token
 
 ### Send a Resource
 
-To send a resource, simply use ``WaniKani/WaniKani/send(_:pageOptions:)``. This sample is assuming you are sending from inside an async-throwing function. 
+To send a resource, simply use ``WaniKani/WaniKani/send(_:pageOptions:)-7lq37``. This sample is assuming you are sending from inside an async-throwing function. 
 
 ```swift
 let response = try await client.send(.summary)

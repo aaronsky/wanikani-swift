@@ -14,7 +14,7 @@ public struct VoiceActor: ModelProtocol {
     public var name: String
     public var url: URL
 
-    init(
+    public init(
         description: String,
         gender: String,
         id: Int,

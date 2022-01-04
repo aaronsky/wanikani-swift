@@ -14,7 +14,7 @@ public struct Summary: ModelProtocol {
     public var reviews: [Review]
     public var url: URL
 
-    init(
+    public init(
         lastUpdated: Date? = nil,
         lessons: [Summary.Lesson],
         nextReviews: Date? = nil,

@@ -41,7 +41,7 @@ public struct Assignment: ModelProtocol {
     public var unlocked: Date?
     public var url: URL
 
-    init(
+    public init(
         available: Date? = nil,
         burned: Date? = nil,
         created: Date,

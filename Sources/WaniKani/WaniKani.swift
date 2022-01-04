@@ -62,7 +62,7 @@ public class WaniKani {
         return try await send(request: request)
     }
 
-    /// Sends a resource to WaniKani and responds accordingly.
+    /// Sends a resource carrying a body to WaniKani and responds accordingly.
     ///
     /// - Parameters:
     ///   - resource: The resource object, which describes how to perform the request

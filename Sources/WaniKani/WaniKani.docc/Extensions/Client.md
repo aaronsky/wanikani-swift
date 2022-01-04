@@ -10,4 +10,5 @@
 
 ### Sending Resources
 
-- ``send(_:pageOptions:)``
+- ``send(_:pageOptions:)-7lq37``
+- ``send(_:pageOptions:)-1tk5g``

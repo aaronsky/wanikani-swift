@@ -5,31 +5,25 @@ import FoundationNetworking
 #endif
 
 extension Array where Element == URLQueryItem {
-    mutating func appendIfNeeded<S: RawRepresentable>(_ value: S?, forKey key: String) where S.RawValue: LosslessStringConvertible {
-        guard let value = value else {
-            return
-        }
+    mutating func append(
+        _ value: String,
+        forKey key: String
+    ) {
+        append(URLQueryItem(name: key, value: value))
+    }
+    // MARK: LosslessStringConvertible
 
-        append(URLQueryItem(name: key, value: String(value.rawValue)))
+    mutating func append<S: LosslessStringConvertible>(
+        _ value: S,
+        forKey key: String
+    ) {
+        append(value, forKey: key)
     }
 
-    mutating func appendIfNeeded<S: LosslessStringConvertible>(_ value: S?, forKey key: String) {
-        guard let value = value else {
-            return
-        }
-
-        append(URLQueryItem(name: key, value: String(value)))
-    }
-
-    mutating func appendIfNeeded<S>(_ value: S?, forKey key: String) where S: Collection, S.Element: RawRepresentable, S.Element.RawValue: LosslessStringConvertible {
-        guard let value = value else {
-            return
-        }
-
-        append(value.map(\.rawValue), forKey: key)
-    }
-
-    mutating func appendIfNeeded<S>(_ value: S?, forKey key: String) where S: Collection, S.Element: LosslessStringConvertible {
+    mutating func appendIfNeeded<Wrapped>(
+        _ value: Optional<Wrapped>,
+        forKey key: String
+    ) where Wrapped: LosslessStringConvertible {
         guard let value = value else {
             return
         }
@@ -37,7 +31,32 @@ extension Array where Element == URLQueryItem {
         append(value, forKey: key)
     }
 
-    mutating func append<S>(_ items: S, forKey key: String) where S: Collection, S.Element: LosslessStringConvertible {
+    // MARK: RawRepresentable
+
+    mutating func append<S>(
+        _ value: S,
+        forKey key: String
+    ) where S: RawRepresentable, S.RawValue: LosslessStringConvertible {
+        append(value.rawValue, forKey: key)
+    }
+
+    mutating func appendIfNeeded<Wrapped>(
+        _ value: Optional<Wrapped>,
+        forKey key: String
+    ) where Wrapped: RawRepresentable, Wrapped.RawValue: LosslessStringConvertible {
+        guard let value = value else {
+            return
+        }
+
+        append(value, forKey: key)
+    }
+
+    // MARK: Collections
+
+    mutating func append<S>(
+        _ items: S,
+        forKey key: String
+    ) where S: Collection, S.Element: LosslessStringConvertible {
         let value = items
             .map(String.init)
             .joined(separator: ",")
@@ -46,26 +65,63 @@ extension Array where Element == URLQueryItem {
             return
         }
 
-        append(URLQueryItem(name: key, value: value))
+        append(String(value), forKey: key)
     }
-}
 
-extension Date: LosslessStringConvertible {
-    public init?(_ description: String) {
-        guard let date = Formatters.iso8601.date(from: description) else {
-            return nil
+    mutating func appendIfNeeded<Wrapped>(
+        _ value: Optional<Wrapped>,
+        forKey key: String
+    ) where Wrapped: Collection, Wrapped.Element: LosslessStringConvertible {
+        guard let value = value else {
+            return
         }
 
-        self = date
+        append(value, forKey: key)
     }
-}
 
-extension UUID: LosslessStringConvertible {
-    public init?(_ description: String) {
-        guard let id = UUID(uuidString: description) else {
-            return nil
+    mutating func append<S>(
+        _ items: S,
+        forKey key: String
+    ) where S: Collection, S.Element: RawRepresentable, S.Element.RawValue: LosslessStringConvertible {
+        append(items.map(\.rawValue), forKey: key)
+    }
+
+    mutating func appendIfNeeded<Wrapped>(
+        _ value: Optional<Wrapped>,
+        forKey key: String
+    ) where Wrapped: Collection, Wrapped.Element: RawRepresentable, Wrapped.Element.RawValue: LosslessStringConvertible {
+        guard let value = value else {
+            return
         }
 
-        self = id
+        append(value, forKey: key)
+    }
+
+    // MARK: Date
+
+    mutating func append(_ value: Date, forKey key: String) {
+        append(value.formatted(.iso8601), forKey: key)
+    }
+
+    mutating func appendIfNeeded(_ value: Date?, forKey key: String) {
+        guard let value = value else {
+            return
+        }
+
+        append(value, forKey: key)
+    }
+
+    // MARK: UUID
+
+    mutating func append(_ value: UUID, forKey key: String) {
+        append(value.uuidString, forKey: key)
+    }
+
+    mutating func appendIfNeeded(_ value: UUID?, forKey key: String) {
+        guard let value = value else {
+            return
+        }
+
+        append(value, forKey: key)
     }
 }

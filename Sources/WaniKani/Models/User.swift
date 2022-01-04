@@ -22,7 +22,7 @@ public struct User: ModelProtocol {
     public var username: String
     public var url: URL
 
-    init(
+    public init(
         currentVacationStarted: Date? = nil,
         id: UUID,
         lastUpdated: Date? = nil,

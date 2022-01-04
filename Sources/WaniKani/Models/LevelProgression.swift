@@ -26,7 +26,7 @@ public struct LevelProgression: ModelProtocol {
     public var unlocked: Date?
     public var url: URL
 
-    init(
+    public init(
         abandoned: Date? = nil,
         completed: Date? = nil,
         created: Date,

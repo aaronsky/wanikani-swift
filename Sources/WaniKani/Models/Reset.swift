@@ -18,7 +18,7 @@ public struct Reset: ModelProtocol {
     public var targetLevel: Int
     public var url: URL
 
-    init(
+    public init(
         confirmed: Date? = nil,
         created: Date,
         id: Int,

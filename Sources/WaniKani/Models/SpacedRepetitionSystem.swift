@@ -32,7 +32,7 @@ public struct SpacedRepetitionSystem: ModelProtocol {
     public var unlockingStagePosition: Int
     public var url: URL
 
-    init(
+    public init(
         burningStagePosition: Int,
         created: Date,
         description: String,

@@ -22,7 +22,7 @@ public struct StudyMaterial: ModelProtocol {
     public var subjectType: Subject.Kind
     public var url: URL
 
-    init(
+    public init(
         created: Date,
         id: Int,
         isHidden: Bool,

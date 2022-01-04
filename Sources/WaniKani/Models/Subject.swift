@@ -296,7 +296,7 @@ public struct Radical: ModelProtocol, SubjectProtocol {
     public var spacedRepetitionSystemID: Int
     public var url: URL
 
-    init(
+    public init(
         amalgamationSubjectIDs: [Int],
         auxiliaryMeanings: [AuxiliaryMeaning],
         characters: String? = nil,
@@ -516,7 +516,7 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
     public var visuallySimilarSubjectIDs: [Int]
     public var url: URL
 
-    init(
+    public init(
         amalgamationSubjectIDs: [Int],
         auxiliaryMeanings: [AuxiliaryMeaning],
         characters: String? = nil,
@@ -703,7 +703,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
     public var spacedRepetitionSystemID: Int
     public var url: URL
 
-    init(
+    public init(
         auxiliaryMeanings: [AuxiliaryMeaning],
         characters: String? = nil,
         componentSubjectIDs: [Int],

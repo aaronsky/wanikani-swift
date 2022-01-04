@@ -24,7 +24,7 @@ public struct Review: ModelProtocol {
     public var subjectID: Int
     public var url: URL
 
-    init(
+    public init(
         assignmentID: Int,
         created: Date,
         endingSRSStage: Int,
