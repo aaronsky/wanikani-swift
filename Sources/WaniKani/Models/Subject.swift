@@ -4,8 +4,6 @@ import Foundation
 public protocol SubjectProtocol {
     /// Collection of auxiliary meanings.
     var auxiliaryMeanings: [AuxiliaryMeaning] { get }
-    /// The UTF-8 characters for the subject, including kanji and hiragana.
-    var characters: String? { get }
     /// Timestamp when the subject was created.
     var created: Date { get }
     /// A URL pointing to the page on wanikani.com that provides detailed information about this subject.
@@ -135,17 +133,6 @@ extension Subject: SubjectProtocol {
         }
     }
 
-    public var characters: String? {
-        switch self {
-        case .radical(let radical):
-            return radical.characters
-        case .kanji(let kanji):
-            return kanji.characters
-        case .vocabulary(let vocabulary):
-            return vocabulary.characters
-        }
-    }
-
     public var created: Date {
         switch self {
         case .radical(let radical):
@@ -254,6 +241,12 @@ public struct Meaning: Codable, Hashable {
     /// Indicates if the meaning is used to evaluate user input for correctness.
     public var isAcceptedAnswer: Bool
 
+    public init(meaning: String, isPrimary: Bool, isAcceptedAnswer: Bool) {
+        self.meaning = meaning
+        self.isPrimary = isPrimary
+        self.isAcceptedAnswer = isAcceptedAnswer
+    }
+
     private enum CodingKeys: String, CodingKey {
         case meaning
         case isPrimary = "primary"
@@ -267,6 +260,11 @@ public struct AuxiliaryMeaning: Codable, Hashable {
     /// When evaluating user input, allowlisted meanings are used to match for correctness. Blocklisted meanings are used to match for incorrectness.
     public var type: Kind
 
+    public init(meaning: String, type: Kind) {
+        self.meaning = meaning
+        self.type = type
+    }
+
     public enum Kind: String, Codable, Hashable {
         case allowlist = "whitelist"
         case blocklist = "blacklist"
@@ -279,6 +277,8 @@ public struct Radical: ModelProtocol, SubjectProtocol {
     /// An array of numeric identifiers for the kanji that have the radical as a component.
     public var amalgamationSubjectIDs: [Int]
     public var auxiliaryMeanings: [AuxiliaryMeaning]
+    /// The UTF-8 characters for the subject, including kanji and hiragana.
+    ///
     /// Unlike kanji and vocabulary, radicals can have a null value for characters. Not all radicals have a UTF entry, so the radical must be visually represented with an image instead.
     public var characters: String?
     /// A collection of images of the radical.
@@ -394,10 +394,15 @@ public struct Radical: ModelProtocol, SubjectProtocol {
         /// Details about the image.
         public var metadata: Metadata
 
-        init(url: URL, contentType: String, metadata: Metadata) {
+        public init(url: URL, metadata: Metadata) {
             self.url = url
-            self.contentType = contentType
             self.metadata = metadata
+            switch metadata {
+            case .svg:
+                self.contentType = "image/svg+xml"
+            case .png:
+                self.contentType = "image/png"
+            }
         }
 
         public init(from decoder: Decoder) throws {
@@ -438,6 +443,10 @@ public struct Radical: ModelProtocol, SubjectProtocol {
                 /// The SVG asset contains built-in CSS styling.
                 public var containsInlineStyles: Bool
 
+                public init(containsInlineStyles: Bool) {
+                    self.containsInlineStyles = containsInlineStyles
+                }
+
                 private enum CodingKeys: String, CodingKey {
                     case containsInlineStyles = "inline_styles"
                 }
@@ -451,6 +460,12 @@ public struct Radical: ModelProtocol, SubjectProtocol {
                 public var dimensions: String
                 /// A name descriptor.
                 public var styleName: String
+
+                public init(color: String, dimensions: String, styleName: String) {
+                    self.color = color
+                    self.dimensions = dimensions
+                    self.styleName = styleName
+                }
 
                 private enum CodingKeys: String, CodingKey {
                     case color
@@ -490,7 +505,8 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
     /// An array of numeric identifiers for the vocabulary that have the kanji as a component.
     public var amalgamationSubjectIDs: [Int]
     public var auxiliaryMeanings: [AuxiliaryMeaning]
-    public var characters: String?
+    /// The UTF-8 characters for the subject.
+    public var characters: String
     /// An array of numeric identifiers for the radicals that make up this kanji. Note that these are the subjects that must have passed assignments in order to unlock this subject's assignment.
     public var componentSubjectIDs: [Int]
     public var created: Date
@@ -519,7 +535,7 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
     public init(
         amalgamationSubjectIDs: [Int],
         auxiliaryMeanings: [AuxiliaryMeaning],
-        characters: String? = nil,
+        characters: String,
         componentSubjectIDs: [Int],
         created: Date,
         documentURL: URL,
@@ -579,7 +595,7 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
 
         amalgamationSubjectIDs = try container.decode([Int].self, forKey: .amalgamationSubjectIDs)
         auxiliaryMeanings = try container.decode([AuxiliaryMeaning].self, forKey: .auxiliaryMeanings)
-        characters = try container.decodeIfPresent(String.self, forKey: .characters)
+        characters = try container.decode(String.self, forKey: .characters)
         componentSubjectIDs = try container.decode([Int].self, forKey: .componentSubjectIDs)
         created = try container.decode(Date.self, forKey: .created)
         documentURL = try container.decode(URL.self, forKey: .documentURL)
@@ -636,6 +652,13 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
         /// The kanji reading's classfication.
         public var type: Kind
 
+        public init(reading: String, isPrimary: Bool, isAcceptedAnswer: Bool, type: Kind) {
+            self.reading = reading
+            self.isPrimary = isPrimary
+            self.isAcceptedAnswer = isAcceptedAnswer
+            self.type = type
+        }
+
         public enum Kind: String, Codable, Hashable {
             case kunyomi
             case nanori
@@ -676,7 +699,8 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
     public let object = "vocabulary"
 
     public var auxiliaryMeanings: [AuxiliaryMeaning]
-    public var characters: String?
+    /// The UTF-8 characters for the subject, including kanji and hiragana.
+    public var characters: String
     /// An array of numeric identifiers for the kanji that make up this vocabulary. Note that these are the subjects that must be have passed assignments in order to unlock this subject's assignment.
     public var componentSubjectIDs: [Int]
     /// A collection of context sentences.
@@ -705,7 +729,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
 
     public init(
         auxiliaryMeanings: [AuxiliaryMeaning],
-        characters: String? = nil,
+        characters: String,
         componentSubjectIDs: [Int],
         contextSentences: [ContextSentence],
         created: Date,
@@ -763,7 +787,7 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         let container = try modelContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
 
         auxiliaryMeanings = try container.decode([AuxiliaryMeaning].self, forKey: .auxiliaryMeanings)
-        characters = try container.decodeIfPresent(String.self, forKey: .characters)
+        characters = try container.decode(String.self, forKey: .characters)
         componentSubjectIDs = try container.decode([Int].self, forKey: .componentSubjectIDs)
         contextSentences = try container.decode([ContextSentence].self, forKey: .contextSentences)
         created = try container.decode(Date.self, forKey: .created)
@@ -813,6 +837,11 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         public var englishSentence: String
         public var japaneseSentence: String
 
+        public init(english: String, japanese: String) {
+            self.englishSentence = english
+            self.japaneseSentence = japanese
+        }
+
         private enum CodingKeys: String, CodingKey {
             case englishSentence = "en"
             case japaneseSentence = "ja"
@@ -827,6 +856,12 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         /// Details about the pronunciation audio.
         public var metadata: Metadata
 
+        public init(url: URL, contentType: String, metadata: Vocabulary.PronunciationAudio.Metadata) {
+            self.url = url
+            self.contentType = contentType
+            self.metadata = metadata
+        }
+
         public struct Metadata: Codable, Hashable {
             /// The gender of the voice actor.
             public var gender: String
@@ -840,6 +875,15 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
             public var voiceActorName: String
             /// Description of the voice.
             public var voiceDescription: String
+
+            public init(gender: String, sourceID: Int, pronunciation: String, voiceActorID: Int, voiceActorName: String, voiceDescription: String) {
+                self.gender = gender
+                self.sourceID = sourceID
+                self.pronunciation = pronunciation
+                self.voiceActorID = voiceActorID
+                self.voiceActorName = voiceActorName
+                self.voiceDescription = voiceDescription
+            }
 
             private enum CodingKeys: String, CodingKey {
                 case gender
@@ -865,6 +909,12 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         public var isPrimary: Bool
         /// Indicates if the reading is used to evaluate user input for correctness.
         public var isAcceptedAnswer: Bool
+
+        public init(reading: String, isPrimary: Bool, isAcceptedAnswer: Bool) {
+            self.reading = reading
+            self.isPrimary = isPrimary
+            self.isAcceptedAnswer = isAcceptedAnswer
+        }
 
         private enum CodingKeys: String, CodingKey {
             case reading

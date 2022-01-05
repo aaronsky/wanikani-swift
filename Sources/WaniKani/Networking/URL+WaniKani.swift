@@ -17,7 +17,7 @@ extension Array where Element == URLQueryItem {
         _ value: S,
         forKey key: String
     ) {
-        append(value, forKey: key)
+        append(String(value), forKey: key)
     }
 
     mutating func appendIfNeeded<Wrapped>(

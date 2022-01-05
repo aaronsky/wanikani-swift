@@ -17,7 +17,6 @@ extension Radical {
             characters: "上",
             characterImages: [
                 CharacterImage(url: URL(),
-                               contentType: "image/png",
                                metadata: .png(.init(color: "#000000",
                                                     dimensions: "101x101",
                                                     styleName: "ground")))
@@ -88,8 +87,8 @@ extension Vocabulary {
             characters: "上",
             componentSubjectIDs: [0, 1],
             contextSentences: [
-                ContextSentence(englishSentence: "ground",
-                                japaneseSentence: "上")
+                ContextSentence(english: "ground",
+                                japanese: "上")
             ],
             created: Date(timeIntervalSince1970: 1000),
             documentURL: URL(),

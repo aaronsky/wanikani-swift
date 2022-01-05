@@ -7,7 +7,7 @@ import FoundationNetworking
 /// A client to the WaniKani REST API backend.
 public class WaniKani {
     /// General structure for errors returned by the WaniKani REST API.
-    public struct Error: Swift.Error, Decodable {
+    public struct Error: Swift.Error, Decodable, Equatable {
         public var statusCode: StatusCode
         public var message: String?
 
@@ -81,6 +81,50 @@ public class WaniKani {
         let content = try decoder.decode(R.Content.self, from: data)
 
         return Response(data: content, response: response)
+    }
+
+    /// Paginate a collection of resources as an async stream, starting from the given ID (or the beginning of the collection by default). Defaults to waiting on rate limit errors, though this can be disabled.
+    ///
+    /// - Parameters:
+    ///   - resource:The resource object, which describes how to perform each request
+    ///   - id: The id to start paginating from. Defaults to `nil`, which will be the beginning of the collection.
+    ///   - waitOnRateLimitErrors: Whether or not to Task.sleep upon encountering rate limit errors. Defaults to `true`.
+    public func paginate<R, Inner>(_ resource: R, afterID id: Int? = nil, waitOnRateLimitErrors: Bool = true) -> AsyncThrowingStream<Response<R>, Swift.Error> where R: Resource, R.Content == ModelCollection<Inner> {
+        var isFirstPage = true
+        var nextPage: PageOptions?
+        if let id = id {
+            nextPage = PageOptions(afterID: id)
+        }
+
+        return AsyncThrowingStream {
+            guard nextPage != nil || (nextPage == nil && isFirstPage) else {
+                return nil
+            }
+
+            var keepTrying = false
+
+            while keepTrying {
+                keepTrying = false
+
+                do {
+                    let response = try await self.send(resource, pageOptions: nextPage)
+                    isFirstPage = false
+                    nextPage = response.page.next
+
+                    return response
+                } catch ResponseError.rateLimitExceeded(let rateLimit, let rateRemaining, let rateReset) {
+                    guard waitOnRateLimitErrors else {
+                        throw ResponseError.rateLimitExceeded(limit: rateLimit, remaining: rateRemaining, reset: rateReset)
+                    }
+                    try await Task.sleep(nanoseconds: UInt64(rateReset.timeIntervalSinceNow) * NSEC_PER_SEC)
+                    keepTrying = true
+                } catch {
+                    throw error
+                }
+            }
+
+            return nil
+        }
     }
 
     private func checkResponseForIssues(_ response: URLResponse, data: Data, decoder: JSONDecoder) throws {

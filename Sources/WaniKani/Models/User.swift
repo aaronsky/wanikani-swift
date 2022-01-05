@@ -111,6 +111,22 @@ public struct User: ModelProtocol {
             case ascendingLevelThenShuffled = "ascending_level_then_shuffled"
         }
 
+        public init(
+            autoplayLessonsAudio: Bool,
+            autoplayReviewsAudio: Bool,
+            defaultVoiceActorID: Int,
+            displayReviewsSRSIndicator: Bool,
+            lessonsBatchSize: Int,
+            lessonsPresentationOrder: User.Preferences.PresentationOrder
+        ) {
+            self.autoplayLessonsAudio = autoplayLessonsAudio
+            self.autoplayReviewsAudio = autoplayReviewsAudio
+            self.defaultVoiceActorID = defaultVoiceActorID
+            self.displayReviewsSRSIndicator = displayReviewsSRSIndicator
+            self.lessonsBatchSize = lessonsBatchSize
+            self.lessonsPresentationOrder = lessonsPresentationOrder
+        }
+
         private enum CodingKeys: String, CodingKey {
             case autoplayLessonsAudio = "lessons_autoplay_audio"
             case autoplayReviewsAudio = "reviews_autoplay_audio"
@@ -142,6 +158,18 @@ public struct User: ModelProtocol {
             case recurring
             /// The user can access WaniKani forever. ``User/Subscription-swift.struct/periodEnds`` is `null`. It's possible that a lifetime user will ask for a refund or have payment difficulties, so scheduled checks on the subscription status are still needed.
             case lifetime
+        }
+
+        public init(
+            isActive: Bool,
+            maxLevelGranted: Int,
+            periodEnds: Date? = nil,
+            type: User.Subscription.Kind
+        ) {
+            self.isActive = isActive
+            self.maxLevelGranted = maxLevelGranted
+            self.periodEnds = periodEnds
+            self.type = type
         }
 
         private enum CodingKeys: String, CodingKey {

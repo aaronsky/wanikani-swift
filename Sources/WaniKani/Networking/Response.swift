@@ -38,7 +38,7 @@ public enum ResponseError: Swift.Error {
 }
 
 /// HTTP response codes returned by WaniKani.
-public enum StatusCode: Int, Error, Codable {
+public enum StatusCode: Int, Codable, Equatable, Error {
     /// The request was successfully processed.
     case ok = 200
     /// The request was successful but did not return any data because it should be cached.
