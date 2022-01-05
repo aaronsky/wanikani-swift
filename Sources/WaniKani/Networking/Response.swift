@@ -14,14 +14,6 @@ public struct Response<R: Resource> {
     /// Details of the HTTP response itself, including headers and client information.
     public var response: URLResponse
 
-    init(
-        data: Content,
-        response: URLResponse
-    ) {
-        self.data = data
-        self.response = response
-    }
-
     public subscript<T>(dynamicMember keyPath: KeyPath<Content, T>) -> T {
         data[keyPath: keyPath]
     }

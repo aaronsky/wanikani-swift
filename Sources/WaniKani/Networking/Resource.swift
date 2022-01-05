@@ -20,6 +20,8 @@ public protocol Resource {
 
     /// A helper for resources to transform the content of their requests. Common use-cases are for appending
     /// query items and altering HTTP methods.
+    ///
+    /// - Parameter request: The request to transform.
     func transformRequest(_ request: inout URLRequest)
 }
 

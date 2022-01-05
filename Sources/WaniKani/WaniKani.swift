@@ -8,7 +8,9 @@ import FoundationNetworking
 public class WaniKani {
     /// General structure for errors returned by the WaniKani REST API.
     public struct Error: Swift.Error, Decodable, Equatable {
+        /// The status code both contained within the error payload and of the response.
         public var statusCode: StatusCode
+        /// The unlocalized message from the WaniKani backend
         public var message: String?
 
         private enum CodingKeys: String, CodingKey {
@@ -59,6 +61,8 @@ public class WaniKani {
     /// - Parameters:
     ///   - resource: The resource object, which describes how to perform the request
     ///   - pageOptions: Options for pagination, which are ignored by resources that do not involve pagination.
+    /// - Returns: A ``Response`` object containing the requested payload and associated URLResponse.
+    /// - Throws: An error, known to be either from URLSession, JSONDecoder, or a ``Error``.
     public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R>
     where R: Resource, R.Content: Decodable {
         let request = try URLRequest(resource, pageOptions: pageOptions, configuration: configuration)
@@ -70,6 +74,8 @@ public class WaniKani {
     /// - Parameters:
     ///   - resource: The resource object, which describes how to perform the request
     ///   - pageOptions: Options for pagination, which are ignored by resources that do not involve pagination.
+    /// - Returns: A ``Response`` object containing the requested payload and associated URLResponse.
+    /// - Throws: An error, known to be either from URLSession, JSONEncoder, JSONDecoder, or a ``Error``.
     public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R>
     where R: Resource, R.Body: Encodable, R.Content: Decodable {
         let request = try URLRequest(resource, pageOptions: pageOptions, configuration: configuration, encoder: encoder)
@@ -93,6 +99,7 @@ public class WaniKani {
     ///   - resource:The resource object, which describes how to perform each request
     ///   - id: The id to start paginating from. Defaults to `nil`, which will be the beginning of the collection.
     ///   - waitOnRateLimitErrors: Whether or not to Task.sleep upon encountering rate limit errors. Defaults to `true`.
+    /// - Returns: An async stream of ``Response`` objects containing the given page's requested payload and associated URLResponse.
     public func paginate<R, Inner>(
         _ resource: R,
         afterID id: Int? = nil,
