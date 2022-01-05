@@ -28,9 +28,10 @@ public enum ReviewStatistics {
 
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
-                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                      return
-                  }
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            else {
+                return
+            }
 
             var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(isHidden, forKey: "hidden")
@@ -69,13 +70,15 @@ extension Resource where Self == ReviewStatistics.List {
         subjectTypes: [Subject.Kind]? = nil,
         updatedAfter: Date? = nil
     ) -> Self {
-        Self(isHidden: isHidden,
-             ids: ids,
-             percentagesGreaterThan: percentagesGreaterThan,
-             percentagesLessThan: percentagesLessThan,
-             subjectIDs: subjectIDs,
-             subjectTypes: subjectTypes,
-             updatedAfter: updatedAfter)
+        Self(
+            isHidden: isHidden,
+            ids: ids,
+            percentagesGreaterThan: percentagesGreaterThan,
+            percentagesLessThan: percentagesLessThan,
+            subjectIDs: subjectIDs,
+            subjectTypes: subjectTypes,
+            updatedAfter: updatedAfter
+        )
     }
 }
 

@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+
 @testable import WaniKani
 
 #if canImport(FoundationNetworking)
@@ -17,7 +18,8 @@ extension StudyMaterial {
             readingNote: "the ground is the ground",
             subjectID: 0,
             subjectType: .radical,
-            url: URL())
+            url: URL()
+        )
     }
 }
 

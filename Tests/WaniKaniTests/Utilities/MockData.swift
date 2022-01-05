@@ -1,4 +1,5 @@
 import Foundation
+
 @testable import WaniKani
 
 #if canImport(FoundationNetworking)
@@ -82,9 +83,11 @@ extension MockData {
     }
 
     private static func urlResponse(for url: URL, rawStatus status: Int) -> URLResponse {
-        HTTPURLResponse(url: url,
-                        statusCode: status,
-                        httpVersion: "HTTP/1.1",
-                        headerFields: [:])!
+        HTTPURLResponse(
+            url: url,
+            statusCode: status,
+            httpVersion: "HTTP/1.1",
+            headerFields: [:]
+        )!
     }
 }

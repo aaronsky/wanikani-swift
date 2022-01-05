@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+
 @testable import WaniKani
 
 #if canImport(FoundationNetworking)
@@ -11,15 +12,23 @@ extension Radical {
         self.init(
             amalgamationSubjectIDs: [1, 2],
             auxiliaryMeanings: [
-                AuxiliaryMeaning(meaning: "ground",
-                                 type: .allowlist)
+                AuxiliaryMeaning(
+                    meaning: "ground",
+                    type: .allowlist
+                )
             ],
             characters: "上",
             characterImages: [
-                CharacterImage(url: URL(),
-                               metadata: .png(.init(color: "#000000",
-                                                    dimensions: "101x101",
-                                                    styleName: "ground")))
+                CharacterImage(
+                    url: URL(),
+                    metadata: .png(
+                        .init(
+                            color: "#000000",
+                            dimensions: "101x101",
+                            styleName: "ground"
+                        )
+                    )
+                )
             ],
             created: Date(timeIntervalSince1970: 1000),
             documentURL: URL(),
@@ -28,9 +37,11 @@ extension Radical {
             level: 1,
             meaningMnemonic: "ground",
             meanings: [
-                Meaning(meaning: "ground",
-                        isPrimary: true,
-                        isAcceptedAnswer: true)
+                Meaning(
+                    meaning: "ground",
+                    isPrimary: true,
+                    isAcceptedAnswer: true
+                )
             ],
             slug: "ground",
             spacedRepetitionSystemID: 0,
@@ -44,8 +55,10 @@ extension Kanji {
         self.init(
             amalgamationSubjectIDs: [1, 2],
             auxiliaryMeanings: [
-                AuxiliaryMeaning(meaning: "ground",
-                                 type: .allowlist)
+                AuxiliaryMeaning(
+                    meaning: "ground",
+                    type: .allowlist
+                )
             ],
             characters: "上",
             componentSubjectIDs: [1, 2, 3],
@@ -57,17 +70,21 @@ extension Kanji {
             meaningHint: "ground",
             meaningMnemonic: "ground",
             meanings: [
-                Meaning(meaning: "ground",
-                        isPrimary: true,
-                        isAcceptedAnswer: true)
+                Meaning(
+                    meaning: "ground",
+                    isPrimary: true,
+                    isAcceptedAnswer: true
+                )
             ],
             readingHint: "ground",
             readingMnemonic: "ground",
             readings: [
-                Reading(reading: "ground",
-                        isPrimary: true,
-                        isAcceptedAnswer: true,
-                        type: .kunyomi)
+                Reading(
+                    reading: "ground",
+                    isPrimary: true,
+                    isAcceptedAnswer: true,
+                    type: .kunyomi
+                )
             ],
             slug: "ground",
             spacedRepetitionSystemID: 0,
@@ -81,14 +98,18 @@ extension Vocabulary {
     init() {
         self.init(
             auxiliaryMeanings: [
-                AuxiliaryMeaning(meaning: "ground",
-                                 type: .allowlist)
+                AuxiliaryMeaning(
+                    meaning: "ground",
+                    type: .allowlist
+                )
             ],
             characters: "上",
             componentSubjectIDs: [0, 1],
             contextSentences: [
-                ContextSentence(english: "ground",
-                                japanese: "上")
+                ContextSentence(
+                    english: "ground",
+                    japanese: "上"
+                )
             ],
             created: Date(timeIntervalSince1970: 1000),
             documentURL: URL(),
@@ -97,25 +118,33 @@ extension Vocabulary {
             level: 1,
             meaningMnemonic: "ground",
             meanings: [
-                Meaning(meaning: "ground",
-                        isPrimary: true,
-                        isAcceptedAnswer: true)
+                Meaning(
+                    meaning: "ground",
+                    isPrimary: true,
+                    isAcceptedAnswer: true
+                )
             ],
             partsOfSpeech: ["noun"],
             pronunciationAudios: [
-                PronunciationAudio(url: URL(),
-                                   contentType: "audio/ogg",
-                                   metadata: PronunciationAudio.Metadata(gender: "female",
-                                                                         sourceID: 0,
-                                                                         pronunciation: "ground",
-                                                                         voiceActorID: 0,
-                                                                         voiceActorName: "Haruko",
-                                                                         voiceDescription: "Someone who has friends."))
+                PronunciationAudio(
+                    url: URL(),
+                    contentType: "audio/ogg",
+                    metadata: PronunciationAudio.Metadata(
+                        gender: "female",
+                        sourceID: 0,
+                        pronunciation: "ground",
+                        voiceActorID: 0,
+                        voiceActorName: "Haruko",
+                        voiceDescription: "Someone who has friends."
+                    )
+                )
             ],
             readings: [
-                Reading(reading: "ground",
-                        isPrimary: true,
-                        isAcceptedAnswer: true)
+                Reading(
+                    reading: "ground",
+                    isPrimary: true,
+                    isAcceptedAnswer: true
+                )
             ],
             readingMnemonic: "ground",
             slug: "ground",
@@ -130,7 +159,7 @@ class SubjectsTests: XCTestCase {
         let expected = ModelCollection(data: [
             Subject.radical(Radical()),
             Subject.kanji(Kanji()),
-            Subject.vocabulary(Vocabulary())
+            Subject.vocabulary(Vocabulary()),
         ])
         let context = try MockContext(content: expected)
 

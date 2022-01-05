@@ -44,9 +44,10 @@ public enum Assignments {
 
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
-                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                      return
-                  }
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            else {
+                return
+            }
 
             var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(availableAfter, forKey: "available_after")
@@ -131,21 +132,23 @@ extension Resource where Self == Assignments.List {
         subjectTypes: [Subject.Kind]? = nil,
         updatedAfter: Date? = nil
     ) -> Self {
-        Self(availableAfter: availableAfter,
-             availableBefore: availableBefore,
-             isBurned: isBurned,
-             isHidden: isHidden,
-             isUnlocked: isUnlocked,
-             ids: ids,
-             immediatelyAvailableForLessons: immediatelyAvailableForLessons,
-             immediatelyAvailableForReview: immediatelyAvailableForReview,
-             inReview: inReview,
-             levels: levels,
-             srsStages: srsStages,
-             isStarted: isStarted,
-             subjectIDs: subjectIDs,
-             subjectTypes: subjectTypes,
-             updatedAfter: updatedAfter)
+        Self(
+            availableAfter: availableAfter,
+            availableBefore: availableBefore,
+            isBurned: isBurned,
+            isHidden: isHidden,
+            isUnlocked: isUnlocked,
+            ids: ids,
+            immediatelyAvailableForLessons: immediatelyAvailableForLessons,
+            immediatelyAvailableForReview: immediatelyAvailableForReview,
+            inReview: inReview,
+            levels: levels,
+            srsStages: srsStages,
+            isStarted: isStarted,
+            subjectIDs: subjectIDs,
+            subjectTypes: subjectTypes,
+            updatedAfter: updatedAfter
+        )
     }
 }
 

@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+
 @testable import WaniKani
 
 #if canImport(FoundationNetworking)
@@ -8,22 +9,28 @@ import FoundationNetworking
 
 extension User {
     init() {
-        self.init(id: UUID(),
-                  level: 1,
-                  preferences: Preferences(autoplayLessonsAudio: false,
-                                           autoplayReviewsAudio: false,
-                                           defaultVoiceActorID: 0,
-                                           displayReviewsSRSIndicator: true,
-                                           lessonsBatchSize: 10,
-                                           lessonsPresentationOrder: .ascendingLevelThenSubject),
-                  profileURL: URL(),
-                  started: Date(timeIntervalSince1970: 1000),
-                  subscription: Subscription(isActive: true,
-                                             maxLevelGranted: 60,
-                                             periodEnds: nil,
-                                             type: .lifetime),
-                  username: "haruko",
-                  url: URL())
+        self.init(
+            id: UUID(),
+            level: 1,
+            preferences: Preferences(
+                autoplayLessonsAudio: false,
+                autoplayReviewsAudio: false,
+                defaultVoiceActorID: 0,
+                displayReviewsSRSIndicator: true,
+                lessonsBatchSize: 10,
+                lessonsPresentationOrder: .ascendingLevelThenSubject
+            ),
+            profileURL: URL(),
+            started: Date(timeIntervalSince1970: 1000),
+            subscription: Subscription(
+                isActive: true,
+                maxLevelGranted: 60,
+                periodEnds: nil,
+                type: .lifetime
+            ),
+            username: "haruko",
+            url: URL()
+        )
     }
 }
 

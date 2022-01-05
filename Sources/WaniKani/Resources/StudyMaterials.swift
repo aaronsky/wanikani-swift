@@ -24,9 +24,10 @@ public enum StudyMaterials {
 
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
-                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                      return
-                  }
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            else {
+                return
+            }
 
             var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(isHidden, forKey: "hidden")
@@ -69,14 +70,21 @@ public enum StudyMaterials {
             /// Meaning synonyms for the subject.
             var meaningSynonyms: [String]?
 
-            public init(subjectID: Int, meaningNote: String?, readingNote: String?, meaningSynonyms: [String]?) {
+            public init(
+                subjectID: Int,
+                meaningNote: String?,
+                readingNote: String?,
+                meaningSynonyms: [String]?
+            ) {
                 self.subjectID = subjectID
                 self.meaningNote = meaningNote
                 self.readingNote = readingNote
                 self.meaningSynonyms = meaningSynonyms
             }
 
-            public init(from decoder: Decoder) throws {
+            public init(
+                from decoder: Decoder
+            ) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 let body = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .studyMaterial)
                 subjectID = try body.decode(Int.self, forKey: .subjectID)
@@ -127,13 +135,19 @@ public enum StudyMaterials {
             /// Meaning synonyms for the subject.
             var meaningSynonyms: [String]?
 
-            public init(meaningNote: String?, readingNote: String?, meaningSynonyms: [String]?) {
+            public init(
+                meaningNote: String?,
+                readingNote: String?,
+                meaningSynonyms: [String]?
+            ) {
                 self.meaningNote = meaningNote
                 self.readingNote = readingNote
                 self.meaningSynonyms = meaningSynonyms
             }
 
-            public init(from decoder: Decoder) throws {
+            public init(
+                from decoder: Decoder
+            ) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 let body = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .studyMaterial)
                 meaningNote = try body.decodeIfPresent(String.self, forKey: .meaningNote)
@@ -176,11 +190,13 @@ extension Resource where Self == StudyMaterials.List {
         subjectTypes: [Subject.Kind]? = nil,
         updatedAfter: Date? = nil
     ) -> Self {
-        Self(isHidden: isHidden,
-             ids: ids,
-             subjectIDs: subjectIDs,
-             subjectTypes: subjectTypes,
-             updatedAfter: updatedAfter)
+        Self(
+            isHidden: isHidden,
+            ids: ids,
+            subjectIDs: subjectIDs,
+            subjectTypes: subjectTypes,
+            updatedAfter: updatedAfter
+        )
     }
 }
 
@@ -199,10 +215,14 @@ extension Resource where Self == StudyMaterials.Create {
         readingNote: String? = nil,
         meaningSynonyms: [String]? = nil
     ) -> Self {
-        Self(body: Self.Body(subjectID: subjectID,
-                             meaningNote: meaningNote,
-                             readingNote: readingNote,
-                             meaningSynonyms: meaningSynonyms))
+        Self(
+            body: Self.Body(
+                subjectID: subjectID,
+                meaningNote: meaningNote,
+                readingNote: readingNote,
+                meaningSynonyms: meaningSynonyms
+            )
+        )
     }
 }
 
@@ -214,8 +234,13 @@ extension Resource where Self == StudyMaterials.Update {
         readingNote: String? = nil,
         meaningSynonyms: [String]? = nil
     ) -> Self {
-        Self(id: id, body: Self.Body(meaningNote: meaningNote,
-                                     readingNote: readingNote,
-                                     meaningSynonyms: meaningSynonyms))
+        Self(
+            id: id,
+            body: Self.Body(
+                meaningNote: meaningNote,
+                readingNote: readingNote,
+                meaningSynonyms: meaningSynonyms
+            )
+        )
     }
 }

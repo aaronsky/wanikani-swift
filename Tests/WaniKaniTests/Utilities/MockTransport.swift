@@ -17,7 +17,9 @@ final class MockTransport {
     var history: [URLRequest] = []
     var responses: [Transport.Output]
 
-    init(responses: [Transport.Output]) {
+    init(
+        responses: [Transport.Output]
+    ) {
         self.responses = responses
     }
 }

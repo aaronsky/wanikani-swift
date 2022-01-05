@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+
 @testable import WaniKani
 
 #if canImport(FoundationNetworking)
@@ -16,9 +17,11 @@ extension SpacedRepetitionSystem {
             name: "ground",
             passingStagePosition: 1,
             stages: [
-                Stage(interval: 0,
-                      intervalUnit: "seconds",
-                      position: 0)
+                Stage(
+                    interval: 0,
+                    intervalUnit: "seconds",
+                    position: 0
+                )
             ],
             startingStagePosition: 0,
             unlockingStagePosition: 0,

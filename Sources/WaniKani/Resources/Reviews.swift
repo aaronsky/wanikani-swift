@@ -22,9 +22,10 @@ public enum Reviews {
 
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
-                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                      return
-                  }
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            else {
+                return
+            }
 
             var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(assignmentIDs, forKey: "assignment_ids")
@@ -70,7 +71,13 @@ public enum Reviews {
             /// Timestamp when the review was completed. Defaults to the time of the request if omitted from the request body. Must be in the past, but after ``Assignment/available``.
             public var createdAt: Date?
 
-            public init(assignmentID: Int?, subjectID: Int?, incorrectMeaningAnswers: UInt, incorrectReadingAnswers: UInt, createdAt: Date?) {
+            public init(
+                assignmentID: Int?,
+                subjectID: Int?,
+                incorrectMeaningAnswers: UInt,
+                incorrectReadingAnswers: UInt,
+                createdAt: Date?
+            ) {
                 self.assignmentID = assignmentID
                 self.subjectID = subjectID
                 self.incorrectMeaningAnswers = incorrectMeaningAnswers
@@ -78,7 +85,9 @@ public enum Reviews {
                 self.createdAt = createdAt
             }
 
-            public init(from decoder: Decoder) throws {
+            public init(
+                from decoder: Decoder
+            ) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 let body = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .review)
                 assignmentID = try body.decodeIfPresent(Int.self, forKey: .assignmentID)
@@ -124,10 +133,12 @@ extension Resource where Self == Reviews.List {
         subjectIDs: [Int]? = nil,
         updatedAfter: Date? = nil
     ) -> Self {
-        Self(assignmentIDs: assignmentIDs,
-             ids: ids,
-             subjectIDs: subjectIDs,
-             updatedAfter: updatedAfter)
+        Self(
+            assignmentIDs: assignmentIDs,
+            ids: ids,
+            subjectIDs: subjectIDs,
+            updatedAfter: updatedAfter
+        )
     }
 }
 
@@ -147,10 +158,14 @@ extension Resource where Self == Reviews.Create {
         incorrectReadingAnswers: UInt = 0,
         createdAt: Date? = nil
     ) -> Self {
-        Self(body: Self.Body(assignmentID: assignmentID,
-                             subjectID: subjectID,
-                             incorrectMeaningAnswers: incorrectMeaningAnswers,
-                             incorrectReadingAnswers: incorrectReadingAnswers,
-                             createdAt: createdAt))
+        Self(
+            body: Self.Body(
+                assignmentID: assignmentID,
+                subjectID: subjectID,
+                incorrectMeaningAnswers: incorrectMeaningAnswers,
+                incorrectReadingAnswers: incorrectReadingAnswers,
+                createdAt: createdAt
+            )
+        )
     }
 }

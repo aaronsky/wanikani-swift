@@ -27,9 +27,10 @@ public enum Subjects {
 
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
-                  var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                      return
-                  }
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            else {
+                return
+            }
 
             var queryItems = components.queryItems ?? []
             queryItems.appendIfNeeded(ids, forKey: "ids")
@@ -67,12 +68,14 @@ extension Resource where Self == Subjects.List {
         isHidden: Bool? = nil,
         updatedAfter: Date? = nil
     ) -> Self {
-        Self(ids: ids,
-             types: types,
-             slugs: slugs,
-             levels: levels,
-             isHidden: isHidden,
-             updatedAfter: updatedAfter)
+        Self(
+            ids: ids,
+            types: types,
+            slugs: slugs,
+            levels: levels,
+            isHidden: isHidden,
+            updatedAfter: updatedAfter
+        )
     }
 }
 

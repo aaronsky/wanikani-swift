@@ -51,7 +51,13 @@ public struct ModelCollection<Model: ModelProtocol>: ModelProtocol, Collection {
         elements.endIndex
     }
 
-    init(url: URL, lastUpdated: Date? = nil, totalCount: Int, page: Page, elements: [Element]) {
+    init(
+        url: URL,
+        lastUpdated: Date? = nil,
+        totalCount: Int,
+        page: Page,
+        elements: [Element]
+    ) {
         self.url = url
         self.lastUpdated = lastUpdated
         self.totalCount = totalCount
@@ -59,13 +65,20 @@ public struct ModelCollection<Model: ModelProtocol>: ModelProtocol, Collection {
         self.elements = elements
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let modelContainer = try decoder.container(keyedBy: ModelCodingKeys.self)
 
         let object = try modelContainer.decode(String.self, forKey: .object)
         guard object == self.object else {
-            throw DecodingError.typeMismatch(Self.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                              debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"
+                )
+            )
         }
 
         url = try modelContainer.decode(URL.self, forKey: .url)

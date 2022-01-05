@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+
 @testable import WaniKani
 
 #if canImport(FoundationNetworking)
@@ -8,11 +9,13 @@ import FoundationNetworking
 
 extension VoiceActor {
     init() {
-        self.init(description: "Someone who has friends.",
-                  gender: "female",
-                  id: 0,
-                  name: "Haruko",
-                  url: URL())
+        self.init(
+            description: "Someone who has friends.",
+            gender: "female",
+            id: 0,
+            name: "Haruko",
+            url: URL()
+        )
     }
 }
 

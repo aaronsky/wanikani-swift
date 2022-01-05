@@ -77,14 +77,21 @@ public enum Subject: ModelProtocol {
         }
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let object = try container.decode(String.self, forKey: .object)
 
         guard let kind = Subject.Kind(rawValue: object) else {
-            throw DecodingError.typeMismatch(Self.self,
-                                             DecodingError.Context(codingPath: container.codingPath,
-                                                                   debugDescription: "Expected to decode Subject, but no recognized subject type could be derived from object type \(object)"))
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: container.codingPath,
+                    debugDescription:
+                        "Expected to decode Subject, but no recognized subject type could be derived from object type \(object)"
+                )
+            )
         }
 
         switch kind {
@@ -241,7 +248,11 @@ public struct Meaning: Codable, Hashable {
     /// Indicates if the meaning is used to evaluate user input for correctness.
     public var isAcceptedAnswer: Bool
 
-    public init(meaning: String, isPrimary: Bool, isAcceptedAnswer: Bool) {
+    public init(
+        meaning: String,
+        isPrimary: Bool,
+        isAcceptedAnswer: Bool
+    ) {
         self.meaning = meaning
         self.isPrimary = isPrimary
         self.isAcceptedAnswer = isAcceptedAnswer
@@ -260,7 +271,10 @@ public struct AuxiliaryMeaning: Codable, Hashable {
     /// When evaluating user input, allowlisted meanings are used to match for correctness. Blocklisted meanings are used to match for incorrectness.
     public var type: Kind
 
-    public init(meaning: String, type: Kind) {
+    public init(
+        meaning: String,
+        type: Kind
+    ) {
         self.meaning = meaning
         self.type = type
     }
@@ -332,13 +346,20 @@ public struct Radical: ModelProtocol, SubjectProtocol {
         self.url = url
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let modelContainer = try decoder.container(keyedBy: ModelCodingKeys.self)
 
         let object = try modelContainer.decode(String.self, forKey: .object)
         guard object == self.object else {
-            throw DecodingError.typeMismatch(Self.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                              debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"
+                )
+            )
         }
 
         id = try modelContainer.decode(Int.self, forKey: .id)
@@ -394,7 +415,10 @@ public struct Radical: ModelProtocol, SubjectProtocol {
         /// Details about the image.
         public var metadata: Metadata
 
-        public init(url: URL, metadata: Metadata) {
+        public init(
+            url: URL,
+            metadata: Metadata
+        ) {
             self.url = url
             self.metadata = metadata
             switch metadata {
@@ -405,7 +429,9 @@ public struct Radical: ModelProtocol, SubjectProtocol {
             }
         }
 
-        public init(from decoder: Decoder) throws {
+        public init(
+            from decoder: Decoder
+        ) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             url = try container.decode(URL.self, forKey: .url)
@@ -417,9 +443,11 @@ public struct Radical: ModelProtocol, SubjectProtocol {
             case "image/png":
                 metadata = try .png(container.decode(Metadata.PNG.self, forKey: .metadata))
             default:
-                throw DecodingError.dataCorruptedError(forKey: .metadata,
-                                                       in: container,
-                                                       debugDescription: "Invalid content-type for character image \(contentType)")
+                throw DecodingError.dataCorruptedError(
+                    forKey: .metadata,
+                    in: container,
+                    debugDescription: "Invalid content-type for character image \(contentType)"
+                )
             }
         }
 
@@ -443,7 +471,9 @@ public struct Radical: ModelProtocol, SubjectProtocol {
                 /// The SVG asset contains built-in CSS styling.
                 public var containsInlineStyles: Bool
 
-                public init(containsInlineStyles: Bool) {
+                public init(
+                    containsInlineStyles: Bool
+                ) {
                     self.containsInlineStyles = containsInlineStyles
                 }
 
@@ -461,7 +491,11 @@ public struct Radical: ModelProtocol, SubjectProtocol {
                 /// A name descriptor.
                 public var styleName: String
 
-                public init(color: String, dimensions: String, styleName: String) {
+                public init(
+                    color: String,
+                    dimensions: String,
+                    styleName: String
+                ) {
                     self.color = color
                     self.dimensions = dimensions
                     self.styleName = styleName
@@ -578,13 +612,20 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
         self.url = url
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let modelContainer = try decoder.container(keyedBy: ModelCodingKeys.self)
 
         let object = try modelContainer.decode(String.self, forKey: .object)
         guard object == self.object else {
-            throw DecodingError.typeMismatch(Self.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                              debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"
+                )
+            )
         }
 
         id = try modelContainer.decode(Int.self, forKey: .id)
@@ -652,7 +693,12 @@ public struct Kanji: ModelProtocol, SubjectProtocol {
         /// The kanji reading's classfication.
         public var type: Kind
 
-        public init(reading: String, isPrimary: Bool, isAcceptedAnswer: Bool, type: Kind) {
+        public init(
+            reading: String,
+            isPrimary: Bool,
+            isAcceptedAnswer: Bool,
+            type: Kind
+        ) {
             self.reading = reading
             self.isPrimary = isPrimary
             self.isAcceptedAnswer = isAcceptedAnswer
@@ -771,13 +817,20 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         self.url = url
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let modelContainer = try decoder.container(keyedBy: ModelCodingKeys.self)
 
         let object = try modelContainer.decode(String.self, forKey: .object)
         guard object == self.object else {
-            throw DecodingError.typeMismatch(Self.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                              debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"
+                )
+            )
         }
 
         id = try modelContainer.decode(Int.self, forKey: .id)
@@ -837,7 +890,10 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         public var englishSentence: String
         public var japaneseSentence: String
 
-        public init(english: String, japanese: String) {
+        public init(
+            english: String,
+            japanese: String
+        ) {
             self.englishSentence = english
             self.japaneseSentence = japanese
         }
@@ -856,7 +912,11 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         /// Details about the pronunciation audio.
         public var metadata: Metadata
 
-        public init(url: URL, contentType: String, metadata: Vocabulary.PronunciationAudio.Metadata) {
+        public init(
+            url: URL,
+            contentType: String,
+            metadata: Vocabulary.PronunciationAudio.Metadata
+        ) {
             self.url = url
             self.contentType = contentType
             self.metadata = metadata
@@ -876,7 +936,14 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
             /// Description of the voice.
             public var voiceDescription: String
 
-            public init(gender: String, sourceID: Int, pronunciation: String, voiceActorID: Int, voiceActorName: String, voiceDescription: String) {
+            public init(
+                gender: String,
+                sourceID: Int,
+                pronunciation: String,
+                voiceActorID: Int,
+                voiceActorName: String,
+                voiceDescription: String
+            ) {
                 self.gender = gender
                 self.sourceID = sourceID
                 self.pronunciation = pronunciation
@@ -910,7 +977,11 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
         /// Indicates if the reading is used to evaluate user input for correctness.
         public var isAcceptedAnswer: Bool
 
-        public init(reading: String, isPrimary: Bool, isAcceptedAnswer: Bool) {
+        public init(
+            reading: String,
+            isPrimary: Bool,
+            isAcceptedAnswer: Bool
+        ) {
             self.reading = reading
             self.isPrimary = isPrimary
             self.isAcceptedAnswer = isAcceptedAnswer

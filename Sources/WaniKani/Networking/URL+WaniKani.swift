@@ -21,7 +21,7 @@ extension Array where Element == URLQueryItem {
     }
 
     mutating func appendIfNeeded<Wrapped>(
-        _ value: Optional<Wrapped>,
+        _ value: Wrapped?,
         forKey key: String
     ) where Wrapped: LosslessStringConvertible {
         guard let value = value else {
@@ -41,7 +41,7 @@ extension Array where Element == URLQueryItem {
     }
 
     mutating func appendIfNeeded<Wrapped>(
-        _ value: Optional<Wrapped>,
+        _ value: Wrapped?,
         forKey key: String
     ) where Wrapped: RawRepresentable, Wrapped.RawValue: LosslessStringConvertible {
         guard let value = value else {
@@ -57,7 +57,8 @@ extension Array where Element == URLQueryItem {
         _ items: S,
         forKey key: String
     ) where S: Collection, S.Element: LosslessStringConvertible {
-        let value = items
+        let value =
+            items
             .map(String.init)
             .joined(separator: ",")
 
@@ -69,7 +70,7 @@ extension Array where Element == URLQueryItem {
     }
 
     mutating func appendIfNeeded<Wrapped>(
-        _ value: Optional<Wrapped>,
+        _ value: Wrapped?,
         forKey key: String
     ) where Wrapped: Collection, Wrapped.Element: LosslessStringConvertible {
         guard let value = value else {
@@ -87,9 +88,10 @@ extension Array where Element == URLQueryItem {
     }
 
     mutating func appendIfNeeded<Wrapped>(
-        _ value: Optional<Wrapped>,
+        _ value: Wrapped?,
         forKey key: String
-    ) where Wrapped: Collection, Wrapped.Element: RawRepresentable, Wrapped.Element.RawValue: LosslessStringConvertible {
+    )
+    where Wrapped: Collection, Wrapped.Element: RawRepresentable, Wrapped.Element.RawValue: LosslessStringConvertible {
         guard let value = value else {
             return
         }

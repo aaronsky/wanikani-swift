@@ -21,7 +21,12 @@ enum Formatters {
         let container = try decoder.singleValueContainer()
         let dateString = try container.decode(String.self)
         guard let date = iso8601.date(from: dateString) else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: container.codingPath, debugDescription: "Expected date string to be ISO8601-formatted."))
+            throw DecodingError.dataCorrupted(
+                DecodingError.Context(
+                    codingPath: container.codingPath,
+                    debugDescription: "Expected date string to be ISO8601-formatted."
+                )
+            )
         }
         return date
     }

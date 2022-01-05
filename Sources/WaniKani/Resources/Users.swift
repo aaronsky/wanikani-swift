@@ -43,7 +43,9 @@ public enum Users {
                 self.reviewsDisplaySRSIndicator = reviewsDisplaySRSIndicator
             }
 
-            public init(from decoder: Decoder) throws {
+            public init(
+                from decoder: Decoder
+            ) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 let body = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .user)
                 defaultVoiceActorID = try body.decodeIfPresent(Int.self, forKey: .defaultVoiceActorID)
@@ -103,11 +105,15 @@ extension Resource where Self == Users.Update {
         reviewsAutoplayAudio: Bool? = nil,
         reviewsDisplaySRSIndicator: Bool? = nil
     ) -> Self {
-        Self(body: Self.Body(defaultVoiceActorID: defaultVoiceActorID,
-                             lessonsAutoplayAudio: lessonsAutoplayAudio,
-                             lessonsBatchSize: lessonsBatchSize,
-                             lessonsPresentationOrder: lessonsPresentationOrder,
-                             reviewsAutoplayAudio: reviewsAutoplayAudio,
-                             reviewsDisplaySRSIndicator: reviewsDisplaySRSIndicator))
+        Self(
+            body: Self.Body(
+                defaultVoiceActorID: defaultVoiceActorID,
+                lessonsAutoplayAudio: lessonsAutoplayAudio,
+                lessonsBatchSize: lessonsBatchSize,
+                lessonsPresentationOrder: lessonsPresentationOrder,
+                reviewsAutoplayAudio: reviewsAutoplayAudio,
+                reviewsDisplaySRSIndicator: reviewsDisplaySRSIndicator
+            )
+        )
     }
 }

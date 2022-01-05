@@ -16,7 +16,9 @@ extension WaniKani {
             Self(version: .v2)
         }
 
-        init(version: APIVersion) {
+        init(
+            version: APIVersion
+        ) {
             self.version = version
         }
 
@@ -39,7 +41,10 @@ extension WaniKani {
         var version: String
         var revision: String
 
-        public init(version: String, revision: String) {
+        public init(
+            version: String,
+            revision: String
+        ) {
             self.version = version
             self.revision = revision
         }

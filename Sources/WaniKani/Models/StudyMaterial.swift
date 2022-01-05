@@ -46,13 +46,20 @@ public struct StudyMaterial: ModelProtocol {
         self.url = url
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let modelContainer = try decoder.container(keyedBy: ModelCodingKeys.self)
 
         let object = try modelContainer.decode(String.self, forKey: .object)
         guard object == self.object else {
-            throw DecodingError.typeMismatch(Self.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                              debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"))
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"
+                )
+            )
         }
 
         id = try modelContainer.decode(Int.self, forKey: .id)

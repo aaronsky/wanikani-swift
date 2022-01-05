@@ -14,7 +14,10 @@ public struct Response<R: Resource> {
     /// Details of the HTTP response itself, including headers and client information.
     public var response: URLResponse
 
-    init(data: Content, response: URLResponse) {
+    init(
+        data: Content,
+        response: URLResponse
+    ) {
         self.data = data
         self.response = response
     }
@@ -60,7 +63,6 @@ public enum StatusCode: Int, Codable, Equatable, Error {
 
     /// Whether the status code is known to be successful.
     var isSuccess: Bool {
-        self == .ok ||
-        self == .notModified
+        self == .ok || self == .notModified
     }
 }

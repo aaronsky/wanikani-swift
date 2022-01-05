@@ -31,13 +31,19 @@ public struct Page: Codable, Hashable {
         return PageOptions(url: previousURL)
     }
 
-    init(perPageCount: Int, nextURL: URL? = nil, previousURL: URL? = nil) {
+    init(
+        perPageCount: Int,
+        nextURL: URL? = nil,
+        previousURL: URL? = nil
+    ) {
         self.perPageCount = perPageCount
         self.nextURL = nextURL
         self.previousURL = previousURL
     }
 
-    public init(from decoder: Decoder) throws {
+    public init(
+        from decoder: Decoder
+    ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         perPageCount = try container.decode(Int.self, forKey: .perPageCount)
@@ -64,21 +70,26 @@ public struct PageOptions: Hashable {
     /// The ID after which to continue pagination.
     public var id: Int
 
-    public init(afterID id: Int) {
+    public init(
+        afterID id: Int
+    ) {
         self.id = id
     }
 
-    init?(url: URL) {
+    init?(
+        url: URL
+    ) {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let item = components
+            let item = components
                 .queryItems?
                 .first(where: {
                     $0.name == QueryItemKeys.pageAfterID.rawValue
                 }),
-              let rawID = item.value,
-              let id = Int(rawID) else {
-                  return nil
-              }
+            let rawID = item.value,
+            let id = Int(rawID)
+        else {
+            return nil
+        }
 
         self.init(afterID: id)
     }
@@ -91,9 +102,10 @@ public struct PageOptions: Hashable {
 extension URLRequest {
     mutating func appendPageOptions(_ options: PageOptions) {
         guard let url = self.url,
-              var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                  return
-              }
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        else {
+            return
+        }
 
         var queryItems = components.queryItems ?? []
         queryItems.append(pageOptions: options)
@@ -103,8 +115,8 @@ extension URLRequest {
     }
 }
 
-private extension Array where Element == URLQueryItem {
-    mutating func append(pageOptions: PageOptions) {
+extension Array where Element == URLQueryItem {
+    fileprivate mutating func append(pageOptions: PageOptions) {
         append(URLQueryItem(name: PageOptions.QueryItemKeys.pageAfterID.rawValue, value: String(pageOptions.id)))
     }
 }

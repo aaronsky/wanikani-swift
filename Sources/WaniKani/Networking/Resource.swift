@@ -40,7 +40,11 @@ extension Resource where Body == Void {
 extension URLRequest {
     static let applicationJSONHeaderValue = "application/json; charset=utf-8"
 
-    init<R: Resource>(_ resource: R, pageOptions: PageOptions?, configuration: WaniKani.Configuration) throws {
+    init<R: Resource>(
+        _ resource: R,
+        pageOptions: PageOptions?,
+        configuration: WaniKani.Configuration
+    ) throws {
         let url = configuration
             .version
             .url(for: resource.path)
@@ -59,7 +63,12 @@ extension URLRequest {
         self = request
     }
 
-    init<R: Resource>(_ resource: R, pageOptions: PageOptions?, configuration: WaniKani.Configuration, encoder: JSONEncoder) throws where R.Body: Encodable {
+    init<R: Resource>(
+        _ resource: R,
+        pageOptions: PageOptions?,
+        configuration: WaniKani.Configuration,
+        encoder: JSONEncoder
+    ) throws where R.Body: Encodable {
         try self.init(resource, pageOptions: pageOptions, configuration: configuration)
         addValue(Self.applicationJSONHeaderValue, forHTTPHeaderField: "Content-Type")
         httpBody = try encoder.encode(resource.body)

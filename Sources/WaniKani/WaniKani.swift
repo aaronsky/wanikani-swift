@@ -46,8 +46,10 @@ public class WaniKani {
     /// - Parameters:
     ///   - configuration: Configures supported API versions and the access token.
     ///   - transport: Transport layer used for API communication. Uses the shared URLSession by default.
-    public init(configuration: Configuration = .default,
-                transport: Transport = URLSession.shared) {
+    public init(
+        configuration: Configuration = .default,
+        transport: Transport = URLSession.shared
+    ) {
         self.transport = transport
         self.configuration = configuration
     }
@@ -57,7 +59,8 @@ public class WaniKani {
     /// - Parameters:
     ///   - resource: The resource object, which describes how to perform the request
     ///   - pageOptions: Options for pagination, which are ignored by resources that do not involve pagination.
-    public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R> where R: Resource, R.Content: Decodable {
+    public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R>
+    where R: Resource, R.Content: Decodable {
         let request = try URLRequest(resource, pageOptions: pageOptions, configuration: configuration)
         return try await send(request: request)
     }
@@ -67,7 +70,8 @@ public class WaniKani {
     /// - Parameters:
     ///   - resource: The resource object, which describes how to perform the request
     ///   - pageOptions: Options for pagination, which are ignored by resources that do not involve pagination.
-    public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R> where R: Resource, R.Body: Encodable, R.Content: Decodable {
+    public func send<R>(_ resource: R, pageOptions: PageOptions? = nil) async throws -> Response<R>
+    where R: Resource, R.Body: Encodable, R.Content: Decodable {
         let request = try URLRequest(resource, pageOptions: pageOptions, configuration: configuration, encoder: encoder)
         return try await send(request: request)
     }
@@ -89,7 +93,11 @@ public class WaniKani {
     ///   - resource:The resource object, which describes how to perform each request
     ///   - id: The id to start paginating from. Defaults to `nil`, which will be the beginning of the collection.
     ///   - waitOnRateLimitErrors: Whether or not to Task.sleep upon encountering rate limit errors. Defaults to `true`.
-    public func paginate<R, Inner>(_ resource: R, afterID id: Int? = nil, waitOnRateLimitErrors: Bool = true) -> AsyncThrowingStream<Response<R>, Swift.Error> where R: Resource, R.Content == ModelCollection<Inner> {
+    public func paginate<R, Inner>(
+        _ resource: R,
+        afterID id: Int? = nil,
+        waitOnRateLimitErrors: Bool = true
+    ) -> AsyncThrowingStream<Response<R>, Swift.Error> where R: Resource, R.Content == ModelCollection<Inner> {
         var isFirstPage = true
         var nextPage: PageOptions?
         if let id = id {
@@ -114,7 +122,11 @@ public class WaniKani {
                     return response
                 } catch ResponseError.rateLimitExceeded(let rateLimit, let rateRemaining, let rateReset) {
                     guard waitOnRateLimitErrors else {
-                        throw ResponseError.rateLimitExceeded(limit: rateLimit, remaining: rateRemaining, reset: rateReset)
+                        throw ResponseError.rateLimitExceeded(
+                            limit: rateLimit,
+                            remaining: rateRemaining,
+                            reset: rateReset
+                        )
                     }
                     try await Task.sleep(nanoseconds: UInt64(rateReset.timeIntervalSinceNow) * NSEC_PER_SEC)
                     keepTrying = true
@@ -129,18 +141,20 @@ public class WaniKani {
 
     private func checkResponseForIssues(_ response: URLResponse, data: Data, decoder: JSONDecoder) throws {
         guard let httpResponse = response as? HTTPURLResponse,
-              let statusCode = StatusCode(rawValue: httpResponse.statusCode) else {
-                  throw ResponseError.incompatibleResponse(response)
-              }
+            let statusCode = StatusCode(rawValue: httpResponse.statusCode)
+        else {
+            throw ResponseError.incompatibleResponse(response)
+        }
 
         if !statusCode.isSuccess {
             if statusCode == .tooManyRequests,
-               let rawLimit = httpResponse.allHeaderFields["Ratelimit-Limit"] as? String,
-               let limit = Int(rawLimit),
-               let rawRemaining = httpResponse.allHeaderFields["Ratelimit-Remaining"] as? String,
-               let remaining = Int(rawRemaining),
-               let rawReset = httpResponse.allHeaderFields["Ratelimit-Reset"] as? String,
-               let resetSecondsSinceEpoch = TimeInterval(rawReset) {
+                let rawLimit = httpResponse.allHeaderFields["Ratelimit-Limit"] as? String,
+                let limit = Int(rawLimit),
+                let rawRemaining = httpResponse.allHeaderFields["Ratelimit-Remaining"] as? String,
+                let remaining = Int(rawRemaining),
+                let rawReset = httpResponse.allHeaderFields["Ratelimit-Reset"] as? String,
+                let resetSecondsSinceEpoch = TimeInterval(rawReset)
+            {
                 let reset = Date(timeIntervalSince1970: resetSecondsSinceEpoch)
                 throw ResponseError.rateLimitExceeded(limit: limit, remaining: remaining, reset: reset)
             } else if let error = try? decoder.decode(Error.self, from: data) {
