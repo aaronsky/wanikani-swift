@@ -30,7 +30,7 @@ extension Radical {
                     )
                 )
             ],
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             documentURL: URL(),
             id: 0,
             lessonPosition: 0,
@@ -62,7 +62,7 @@ extension Kanji {
             ],
             characters: "上",
             componentSubjectIDs: [1, 2, 3],
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             documentURL: URL(),
             id: 0,
             lessonPosition: 0,
@@ -111,7 +111,7 @@ extension Vocabulary {
                     japanese: "上"
                 )
             ],
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             documentURL: URL(),
             id: 0,
             lessonPosition: 0,
@@ -163,7 +163,16 @@ class SubjectsTests: XCTestCase {
         ])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.subjects())
+        let response = try await context.client.send(
+            .subjects(
+                ids: [0, 1],
+                types: [.radical],
+                slugs: ["ground"],
+                levels: [1, 2],
+                isHidden: false,
+                updatedAfter: .testing
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 

@@ -13,4 +13,14 @@ lint:
 		--recursive \
 		.
 
-.PHONY: format lint
+test:
+	swift test --parallel --enable-code-coverage
+
+coverage: test
+	xcrun llvm-cov export \
+    	-format=lcov \
+    	-instr-profile=.build/arm64-apple-macosx/debug/codecov/default.profdata \
+    	.build/arm64-apple-macosx/debug/WaniKaniPackageTests.xctest/Contents/MacOS/WaniKaniPackageTests \
+    	> lcov.info
+
+.PHONY: format lint test coverage

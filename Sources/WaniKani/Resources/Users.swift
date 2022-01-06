@@ -23,7 +23,7 @@ public enum Users {
             var defaultVoiceActorID: Int?
             var lessonsAutoplayAudio: Bool?
             var lessonsBatchSize: Int?
-            var lessonsPresentationOrder: String?
+            var lessonsPresentationOrder: User.Preferences.PresentationOrder?
             var reviewsAutoplayAudio: Bool?
             var reviewsDisplaySRSIndicator: Bool?
 
@@ -31,7 +31,7 @@ public enum Users {
                 defaultVoiceActorID: Int? = nil,
                 lessonsAutoplayAudio: Bool? = nil,
                 lessonsBatchSize: Int? = nil,
-                lessonsPresentationOrder: String? = nil,
+                lessonsPresentationOrder: User.Preferences.PresentationOrder? = nil,
                 reviewsAutoplayAudio: Bool? = nil,
                 reviewsDisplaySRSIndicator: Bool? = nil
             ) {
@@ -51,7 +51,10 @@ public enum Users {
                 defaultVoiceActorID = try body.decodeIfPresent(Int.self, forKey: .defaultVoiceActorID)
                 lessonsAutoplayAudio = try body.decodeIfPresent(Bool.self, forKey: .lessonsAutoplayAudio)
                 lessonsBatchSize = try body.decodeIfPresent(Int.self, forKey: .lessonsBatchSize)
-                lessonsPresentationOrder = try body.decodeIfPresent(String.self, forKey: .lessonsPresentationOrder)
+                lessonsPresentationOrder = try body.decodeIfPresent(
+                    User.Preferences.PresentationOrder.self,
+                    forKey: .lessonsPresentationOrder
+                )
                 reviewsAutoplayAudio = try body.decodeIfPresent(Bool.self, forKey: .reviewsAutoplayAudio)
                 reviewsDisplaySRSIndicator = try body.decodeIfPresent(Bool.self, forKey: .reviewsDisplaySRSIndicator)
             }
@@ -101,7 +104,7 @@ extension Resource where Self == Users.Update {
         defaultVoiceActorID: Int? = nil,
         lessonsAutoplayAudio: Bool? = nil,
         lessonsBatchSize: Int? = nil,
-        lessonsPresentationOrder: String? = nil,
+        lessonsPresentationOrder: User.Preferences.PresentationOrder? = nil,
         reviewsAutoplayAudio: Bool? = nil,
         reviewsDisplaySRSIndicator: Bool? = nil
     ) -> Self {
@@ -113,6 +116,24 @@ extension Resource where Self == Users.Update {
                 lessonsPresentationOrder: lessonsPresentationOrder,
                 reviewsAutoplayAudio: reviewsAutoplayAudio,
                 reviewsDisplaySRSIndicator: reviewsDisplaySRSIndicator
+            )
+        )
+    }
+
+    /// Helper method for updating all properties for a user's preferences using
+    /// an existing ``Preferences`` instance.
+    ///
+    /// - Parameter preferences: A ``Preferences`` object from an existing ``User`` object.
+    /// - Returns: An updated summary of user information.
+    public static func updateUser(preferences: User.Preferences) -> Self {
+        Self(
+            body: Self.Body(
+                defaultVoiceActorID: preferences.defaultVoiceActorID,
+                lessonsAutoplayAudio: preferences.autoplayLessonsAudio,
+                lessonsBatchSize: preferences.lessonsBatchSize,
+                lessonsPresentationOrder: preferences.lessonsPresentationOrder,
+                reviewsAutoplayAudio: preferences.autoplayReviewsAudio,
+                reviewsDisplaySRSIndicator: preferences.displayReviewsSRSIndicator
             )
         )
     }

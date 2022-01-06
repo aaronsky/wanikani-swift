@@ -10,7 +10,7 @@ import FoundationNetworking
 extension StudyMaterial {
     init() {
         self.init(
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             id: 0,
             isHidden: false,
             meaningNote: "the thing beneath your feet",
@@ -28,7 +28,15 @@ class StudyMaterialsTests: XCTestCase {
         let expected = ModelCollection(data: [StudyMaterial()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.studyMaterials())
+        let response = try await context.client.send(
+            .studyMaterials(
+                isHidden: false,
+                ids: [0, 1],
+                subjectIDs: [0, 1],
+                subjectTypes: [.radical],
+                updatedAfter: .testing
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 
@@ -44,7 +52,14 @@ class StudyMaterialsTests: XCTestCase {
         let expected = StudyMaterial()
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.createStudyMaterial(subjectID: 0))
+        let response = try await context.client.send(
+            .createStudyMaterial(
+                subjectID: 0,
+                meaningNote: "ground",
+                readingNote: "ground",
+                meaningSynonyms: ["earth", "floor"]
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 
@@ -52,7 +67,14 @@ class StudyMaterialsTests: XCTestCase {
         let expected = StudyMaterial()
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.updateStudyMaterial(0))
+        let response = try await context.client.send(
+            .updateStudyMaterial(
+                0,
+                meaningNote: "ground",
+                readingNote: "ground",
+                meaningSynonyms: ["earth", "floor"]
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 }

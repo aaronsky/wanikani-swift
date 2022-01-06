@@ -10,7 +10,7 @@ import FoundationNetworking
 extension ReviewStatistic {
     init() {
         self.init(
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             id: 0,
             isHidden: false,
             meaningCorrect: 0,
@@ -34,7 +34,17 @@ class ReviewStatisticsTests: XCTestCase {
         let expected = ModelCollection(data: [ReviewStatistic()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.reviewStatistics())
+        let response = try await context.client.send(
+            .reviewStatistics(
+                isHidden: false,
+                ids: [0, 1],
+                percentagesGreaterThan: 0,
+                percentagesLessThan: 100,
+                subjectIDs: [400, 4000],
+                subjectTypes: [.radical],
+                updatedAfter: .testing
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 

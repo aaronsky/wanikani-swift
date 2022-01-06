@@ -11,7 +11,7 @@ extension Reset {
     init() {
         self.init(
             confirmed: nil,
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             id: 0,
             originalLevel: 0,
             targetLevel: 0,
@@ -25,7 +25,7 @@ class ResetsTests: XCTestCase {
         let expected = ModelCollection(data: [Reset()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.resets())
+        let response = try await context.client.send(.resets(ids: [0, 1], updatedAfter: .testing))
         XCTAssertEqual(response.data, expected)
     }
 

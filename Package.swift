@@ -21,12 +21,6 @@ let package = Package(
             name: "WaniKani",
             dependencies: []
         ),
-        // Examples
-        .executableTarget(
-            name: "apitest",
-            dependencies: ["WaniKani"],
-            path: "Examples/apitest"
-        ),
         // Tests
         .testTarget(
             name: "WaniKaniTests",

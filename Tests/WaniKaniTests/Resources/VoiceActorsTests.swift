@@ -24,7 +24,7 @@ class VoiceActorsTests: XCTestCase {
         let expected = ModelCollection(data: [VoiceActor()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.voiceActors())
+        let response = try await context.client.send(.voiceActors(ids: [0, 1], updatedAfter: .testing))
         XCTAssertEqual(response.data, expected)
     }
 

@@ -15,7 +15,7 @@ public enum Subjects {
         /// Only subjects where `id` matches one of the array values are returned.
         var ids: [Int]?
         /// Return subjects of the specified types.
-        var types: [String]?
+        var types: [Subject.Kind]?
         /// Return subjects of the specified slug.
         var slugs: [String]?
         /// Return subjects at the specified levels.
@@ -62,7 +62,7 @@ extension Resource where Self == Subjects.List {
     /// Returns a collection of all ``Subject``s, ordered by ascending creation date, 1000 at a time.
     public static func subjects(
         ids: [Int]? = nil,
-        types: [String]? = nil,
+        types: [Subject.Kind]? = nil,
         slugs: [String]? = nil,
         levels: [Int]? = nil,
         isHidden: Bool? = nil,

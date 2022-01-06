@@ -35,4 +35,30 @@ jobs:
     steps:
       - uses: actions/checkout@v1.0.0
       - name: SwiftPM Build
-        run: swift test
+        run: make test
+  lint:
+    runs-on: macOS-11
+    env:
+      SWIFT_FORMAT_VERSION: '0.50500.0'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: actions/cache@v2
+        id: cache-swift-format
+        with:
+          key: swift-format-build-${{ env.SWIFT_FORMAT_VERSION }}
+          path: ./swift-format/.build/release/swift-format
+      - name: install swift-format
+        if: steps.cache-swift-format.outputs.cache-hit != 'true'
+        run: |-
+          git clone https://github.com/apple/swift-format.git
+          pushd swift-format
+          git checkout "tags/${{ env.SWIFT_FORMAT_VERSION }}"
+          swift build -c release
+          popd
+      - name: lint
+        run: make lint SWIFT_FORMAT_BIN=./swift-format/.build/release/swift-format
+

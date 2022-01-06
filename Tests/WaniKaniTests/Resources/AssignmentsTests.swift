@@ -12,7 +12,7 @@ extension Assignment {
         self.init(
             available: nil,
             burned: nil,
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             id: 0,
             isHidden: false,
             lastUpdated: nil,
@@ -34,7 +34,25 @@ class AssignmentsTests: XCTestCase {
         let expected = ModelCollection(data: [Assignment()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.assignments())
+        let response = try await context.client.send(
+            .assignments(
+                availableAfter: .testing,
+                availableBefore: .testing,
+                isBurned: false,
+                isHidden: false,
+                isUnlocked: true,
+                ids: [0, 1],
+                immediatelyAvailableForLessons: false,
+                immediatelyAvailableForReview: true,
+                inReview: true,
+                levels: [10, 11, 12],
+                srsStages: [1, 2],
+                isStarted: true,
+                subjectIDs: [400, 4000],
+                subjectTypes: [.radical, .kanji],
+                updatedAfter: .testing
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 
@@ -50,7 +68,7 @@ class AssignmentsTests: XCTestCase {
         let expected = Assignment()
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.startAssignment(0))
+        let response = try await context.client.send(.startAssignment(0, startedAt: .testing))
         XCTAssertEqual(response.data, expected)
     }
 }

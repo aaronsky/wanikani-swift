@@ -11,7 +11,7 @@ extension SpacedRepetitionSystem {
     init() {
         self.init(
             burningStagePosition: 8,
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             description: "ground",
             id: 0,
             name: "ground",
@@ -35,7 +35,7 @@ class SpacedRepetitionSystemsTests: XCTestCase {
         let expected = ModelCollection(data: [SRS()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.spacedRepetitionSystems())
+        let response = try await context.client.send(.spacedRepetitionSystems(ids: [0, 1], updatedAfter: .testing))
         XCTAssertEqual(response.data, expected)
     }
 

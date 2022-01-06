@@ -11,7 +11,7 @@ extension Review {
     init() {
         self.init(
             assignmentID: 0,
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             endingSRSStage: 0,
             id: 0,
             incorrectMeaningAnswers: 0,
@@ -29,7 +29,9 @@ class ReviewsTests: XCTestCase {
         let expected = ModelCollection(data: [Review()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.reviews())
+        let response = try await context.client.send(
+            .reviews(assignmentIDs: [0, 1], ids: [0, 1], subjectIDs: [0, 1], updatedAfter: .testing)
+        )
         XCTAssertEqual(response.data, expected)
     }
 
@@ -45,7 +47,15 @@ class ReviewsTests: XCTestCase {
         let expected = Review()
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.createReview())
+        let response = try await context.client.send(
+            .createReview(
+                assignmentID: 0,
+                subjectID: 0,
+                incorrectMeaningAnswers: 0,
+                incorrectReadingAnswers: 0,
+                createdAt: .testing
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 }

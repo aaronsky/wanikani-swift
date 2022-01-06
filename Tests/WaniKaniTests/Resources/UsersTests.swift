@@ -21,7 +21,7 @@ extension User {
                 lessonsPresentationOrder: .ascendingLevelThenSubject
             ),
             profileURL: URL(),
-            started: Date(timeIntervalSince1970: 1000),
+            started: .testing,
             subscription: Subscription(
                 isActive: true,
                 maxLevelGranted: 60,
@@ -47,7 +47,16 @@ class UsersTests: XCTestCase {
         let expected = User()
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.updateUser())
+        let response = try await context.client.send(
+            .updateUser(
+                defaultVoiceActorID: 0,
+                lessonsAutoplayAudio: false,
+                lessonsBatchSize: 5,
+                lessonsPresentationOrder: .ascendingLevelThenShuffled,
+                reviewsAutoplayAudio: false,
+                reviewsDisplaySRSIndicator: true
+            )
+        )
         XCTAssertEqual(response.data, expected)
     }
 }

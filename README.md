@@ -26,4 +26,4 @@ print(reviews)
 
 ## License
 
-WaniKani for Swift is released under the BSD-2 license. [See LICENSE](https://github.com/aaronsky/wanikani-swift/blob/master/LICENSE) for details. WaniKani data is subject to the [Terms of Use](https://www.wanikani.com/terms), which prohibit use of their copywritten learning material for commercial purposes. 
+WaniKani for Swift is released under Apache License 2.0. [See LICENSE](https://github.com/aaronsky/wanikani-swift/blob/master/LICENSE) for details. WaniKani data is subject to the [Terms of Use](https://www.wanikani.com/terms).

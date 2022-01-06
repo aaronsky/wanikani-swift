@@ -25,6 +25,14 @@ struct MockResources {
     var contentResource = HasContent()
     var content = HasContent.Content(name: "Jeff", age: 35)
 
+    struct HasPaginatedContent: Resource {
+        typealias Content = [MockResources.Content]
+        let path = "mock"
+    }
+
+    var paginatedContentResource = HasPaginatedContent()
+    var paginatedContent: HasPaginatedContent.Content = [.init(name: "Jeff", age: 35), .init(name: "Jeff", age: 35)]
+
     struct HasBodyAndContent: Resource {
         typealias Content = MockResources.Content
 
@@ -63,7 +71,7 @@ extension MockData {
     }
 
     static func mockingUnsuccessfulResponse(for url: URL) -> (Data, URLResponse) {
-        let json = #"{"message":"not found","errors": ["go away"]}"#
+        let json = #"{"message":"not found","code": 400}"#
         guard let data = json.data(using: .utf8) else {
             fatalError("Could not encode json as data")
         }

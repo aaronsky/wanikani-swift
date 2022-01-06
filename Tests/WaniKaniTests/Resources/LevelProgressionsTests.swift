@@ -12,7 +12,7 @@ extension LevelProgression {
         self.init(
             abandoned: nil,
             completed: nil,
-            created: Date(timeIntervalSince1970: 1000),
+            created: .testing,
             id: 0,
             level: 0,
             passed: nil,
@@ -28,7 +28,7 @@ class LevelProgressionsTests: XCTestCase {
         let expected = ModelCollection(data: [LevelProgression()])
         let context = try MockContext(content: expected)
 
-        let response = try await context.client.send(.levelProgressions())
+        let response = try await context.client.send(.levelProgressions(ids: [0, 1], updatedAfter: .testing))
         XCTAssertEqual(response.data, expected)
     }
 

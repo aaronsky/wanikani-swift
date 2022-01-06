@@ -12,14 +12,14 @@ extension Summary {
         self.init(
             lessons: [
                 Summary.Lesson(
-                    available: Date(timeIntervalSince1970: 1000),
+                    available: .testing,
                     subjectIDs: [1, 2]
                 )
             ],
             nextReviews: nil,
             reviews: [
                 Summary.Review(
-                    available: Date(timeIntervalSince1970: 1000),
+                    available: .testing,
                     subjectIDs: [1, 2]
                 )
             ],
