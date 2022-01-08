@@ -24,7 +24,7 @@ extension Radical {
                     metadata: .png(
                         .init(
                             color: "#000000",
-                            dimensions: "101x101",
+                            dimensions: .init(width: 101, height: 101),
                             styleName: "ground"
                         )
                     )

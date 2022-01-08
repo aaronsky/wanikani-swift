@@ -5,7 +5,7 @@ import FoundationNetworking
 #endif
 
 /// A client to the WaniKani REST API backend.
-public class WaniKani {
+public struct WaniKani {
     /// General structure for errors returned by the WaniKani REST API.
     public struct Error: Swift.Error, Decodable, Equatable {
         /// The status code both contained within the error payload and of the response.
@@ -111,7 +111,7 @@ public class WaniKani {
             nextPage = PageOptions(afterID: id)
         }
 
-        return AsyncThrowingStream { [unowned self] in
+        return AsyncThrowingStream {
             guard nextPage != nil || (nextPage == nil && isFirstPage) else {
                 return nil
             }

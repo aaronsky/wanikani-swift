@@ -485,20 +485,75 @@ public struct Radical: ModelProtocol, SubjectProtocol {
             public struct PNG: Codable, Hashable {
                 /// Color of the asset in hexadecimal.
                 public var color: String
-                // FIXME: WxH as string, or CGSize?
                 /// Dimension of the asset in pixels.
-                public var dimensions: String
+                public var dimensions: Dimensions
                 /// A name descriptor.
                 public var styleName: String
 
                 public init(
                     color: String,
-                    dimensions: String,
+                    dimensions: Dimensions,
                     styleName: String
                 ) {
                     self.color = color
                     self.dimensions = dimensions
                     self.styleName = styleName
+                }
+
+                public init(
+                    from decoder: Decoder
+                ) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    color = try container.decode(String.self, forKey: .color)
+                    dimensions = try container.decode(Dimensions.self, forKey: .dimensions)
+                    styleName = try container.decode(String.self, forKey: .styleName)
+                }
+
+                public func encode(to encoder: Encoder) throws {
+                    var container = encoder.container(keyedBy: CodingKeys.self)
+                    try container.encode(color, forKey: .color)
+                    try container.encode(dimensions, forKey: .dimensions)
+                    try container.encode(styleName, forKey: .styleName)
+                }
+
+                public struct Dimensions: Codable, Hashable {
+                    public var width: Int
+                    public var height: Int
+
+                    public init(
+                        width: Int,
+                        height: Int
+                    ) {
+                        self.width = width
+                        self.height = height
+                    }
+
+                    public init(
+                        from decoder: Decoder
+                    ) throws {
+                        let container = try decoder.singleValueContainer()
+                        let raw = try container.decode(String.self)
+                        let components =
+                            raw
+                            .components(separatedBy: "x")
+                            .compactMap(Int.init)
+                            .prefix(2)
+                        if components.count == 2 {
+                            self.init(width: components[0], height: components[1])
+                        } else if components.count == 1 {
+                            self.init(width: components[0], height: components[0])
+                        } else {
+                            throw DecodingError.dataCorruptedError(
+                                in: container,
+                                debugDescription: "Expected pair in the format WxH but found \"\(raw)\""
+                            )
+                        }
+                    }
+
+                    public func encode(to encoder: Encoder) throws {
+                        var container = encoder.singleValueContainer()
+                        try container.encode("\(width)x\(height)")
+                    }
                 }
 
                 private enum CodingKeys: String, CodingKey {
