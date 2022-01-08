@@ -25,6 +25,22 @@ public enum Subjects {
         /// Only subjects updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            ids: [Int]? = nil,
+            types: [Subject.Kind]? = nil,
+            slugs: [String]? = nil,
+            levels: [Int]? = nil,
+            isHidden: Bool? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.ids = ids
+            self.types = types
+            self.slugs = slugs
+            self.levels = levels
+            self.isHidden = isHidden
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -51,6 +67,12 @@ public enum Subjects {
         /// Unique identifier of the `subject`.
         public var id: Int
         public let cachePolicy: URLRequest.CachePolicy = .returnCacheDataElseLoad
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
+        }
 
         public var path: String {
             "subjects/\(id)"

@@ -26,6 +26,24 @@ public enum ReviewStatistics {
         /// Only review statistics updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            isHidden: Bool? = nil,
+            ids: [Int]? = nil,
+            percentagesGreaterThan: Int? = nil,
+            percentagesLessThan: Int? = nil,
+            subjectIDs: [Int]? = nil,
+            subjectTypes: [Subject.Kind]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.isHidden = isHidden
+            self.ids = ids
+            self.percentagesGreaterThan = percentagesGreaterThan
+            self.percentagesLessThan = percentagesLessThan
+            self.subjectIDs = subjectIDs
+            self.subjectTypes = subjectTypes
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -55,6 +73,12 @@ public enum ReviewStatistics {
 
         public var path: String {
             "review_statistics/\(id)"
+        }
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
         }
     }
 }

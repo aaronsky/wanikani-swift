@@ -20,6 +20,18 @@ public enum Reviews {
         /// Only reviews updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            assignmentIDs: [Int]? = nil,
+            ids: [Int]? = nil,
+            subjectIDs: [Int]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.assignmentIDs = assignmentIDs
+            self.ids = ids
+            self.subjectIDs = subjectIDs
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -43,6 +55,12 @@ public enum Reviews {
 
         /// Unique identifier of the review.
         public var id: Int
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
+        }
 
         public var path: String {
             "reviews/\(id)"
@@ -118,6 +136,12 @@ public enum Reviews {
         }
 
         public let path = "reviews"
+
+        public init(
+            body: Body
+        ) {
+            self.body = body
+        }
 
         public func transformRequest(_ request: inout URLRequest) {
             request.httpMethod = "POST"

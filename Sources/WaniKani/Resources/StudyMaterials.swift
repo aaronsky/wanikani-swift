@@ -22,6 +22,20 @@ public enum StudyMaterials {
         /// Only study materials updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            isHidden: Bool? = nil,
+            ids: [Int]? = nil,
+            subjectIDs: [Int]? = nil,
+            subjectTypes: [Subject.Kind]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.isHidden = isHidden
+            self.ids = ids
+            self.subjectIDs = subjectIDs
+            self.subjectTypes = subjectTypes
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -49,6 +63,12 @@ public enum StudyMaterials {
 
         public var path: String {
             "study_materials/\(id)"
+        }
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
         }
     }
 
@@ -113,6 +133,12 @@ public enum StudyMaterials {
 
         public let path = "study_materials"
 
+        public init(
+            body: Body
+        ) {
+            self.body = body
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             request.httpMethod = "POST"
         }
@@ -173,6 +199,14 @@ public enum StudyMaterials {
 
         public var path: String {
             "study_materials/\(id)"
+        }
+
+        public init(
+            id: Int,
+            body: Body
+        ) {
+            self.id = id
+            self.body = body
         }
 
         public func transformRequest(_ request: inout URLRequest) {

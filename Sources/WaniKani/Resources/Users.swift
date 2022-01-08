@@ -10,6 +10,8 @@ public enum Users {
         public typealias Content = User
 
         public let path = "user"
+
+        public init() {}
     }
 
     /// Returns an updated summary of user information.
@@ -84,6 +86,12 @@ public enum Users {
         }
 
         public let path = "user"
+
+        public init(
+            body: Body
+        ) {
+            self.body = body
+        }
 
         public func transformRequest(_ request: inout URLRequest) {
             request.httpMethod = "PUT"

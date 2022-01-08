@@ -16,6 +16,14 @@ public enum Resets {
         /// Only resets updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            ids: [Int]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.ids = ids
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -37,6 +45,12 @@ public enum Resets {
 
         /// Unique identifier of the reset.
         public var id: Int
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
+        }
 
         public var path: String {
             "resets/\(id)"

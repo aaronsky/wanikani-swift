@@ -111,7 +111,7 @@ public class WaniKani {
             nextPage = PageOptions(afterID: id)
         }
 
-        return AsyncThrowingStream {
+        return AsyncThrowingStream { [unowned self] in
             guard nextPage != nil || (nextPage == nil && isFirstPage) else {
                 return nil
             }

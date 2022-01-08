@@ -16,6 +16,14 @@ public enum SpacedRepetitionSystems {
         /// Only ``SpacedRepetitionSystem``s updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            ids: [Int]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.ids = ids
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -40,6 +48,12 @@ public enum SpacedRepetitionSystems {
 
         public var path: String {
             "spaced_repetition_systems/\(id)"
+        }
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
         }
     }
 }

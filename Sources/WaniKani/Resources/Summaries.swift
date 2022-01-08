@@ -10,6 +10,8 @@ public enum Summaries {
         public typealias Content = Summary
 
         public let path = "summary"
+
+        public init() {}
     }
 }
 

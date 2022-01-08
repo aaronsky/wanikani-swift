@@ -16,6 +16,14 @@ public enum LevelProgressions {
         /// Only level progressions updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            ids: [Int]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.ids = ids
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -37,6 +45,12 @@ public enum LevelProgressions {
 
         /// Unique identifier of the level progression.
         public var id: Int
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
+        }
 
         public var path: String {
             "level_progressions/\(id)"

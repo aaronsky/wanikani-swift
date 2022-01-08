@@ -42,6 +42,40 @@ public enum Assignments {
         /// Only assignments updated after this time are returned.
         var updatedAfter: Date?
 
+        public init(
+            availableAfter: Date? = nil,
+            availableBefore: Date? = nil,
+            isBurned: Bool? = nil,
+            isHidden: Bool? = nil,
+            isUnlocked: Bool? = nil,
+            ids: [Int]? = nil,
+            immediatelyAvailableForLessons: Bool? = nil,
+            immediatelyAvailableForReview: Bool? = nil,
+            inReview: Bool? = nil,
+            levels: [Int]? = nil,
+            srsStages: [Int]? = nil,
+            isStarted: Bool? = nil,
+            subjectIDs: [Int]? = nil,
+            subjectTypes: [Subject.Kind]? = nil,
+            updatedAfter: Date? = nil
+        ) {
+            self.availableAfter = availableAfter
+            self.availableBefore = availableBefore
+            self.isBurned = isBurned
+            self.isHidden = isHidden
+            self.isUnlocked = isUnlocked
+            self.ids = ids
+            self.immediatelyAvailableForLessons = immediatelyAvailableForLessons
+            self.immediatelyAvailableForReview = immediatelyAvailableForReview
+            self.inReview = inReview
+            self.levels = levels
+            self.srsStages = srsStages
+            self.isStarted = isStarted
+            self.subjectIDs = subjectIDs
+            self.subjectTypes = subjectTypes
+            self.updatedAfter = updatedAfter
+        }
+
         public func transformRequest(_ request: inout URLRequest) {
             guard let url = request.url,
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -80,6 +114,12 @@ public enum Assignments {
         public var path: String {
             "assignments/\(id)"
         }
+
+        public init(
+            id: Int
+        ) {
+            self.id = id
+        }
     }
 
     /// Mark the assignment as started, moving the assignment from the lessons queue to the review queue. Returns the updated assignment.
@@ -105,6 +145,14 @@ public enum Assignments {
 
         public var path: String {
             "assignments/\(id)/start"
+        }
+
+        public init(
+            id: Int,
+            body: Body
+        ) {
+            self.id = id
+            self.body = body
         }
 
         public func transformRequest(_ request: inout URLRequest) {
