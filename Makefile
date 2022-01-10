@@ -8,14 +8,14 @@ format:
 		--ignore-unparsable-files \
 		--in-place \
 		--recursive \
-		.
+		$(GIT_REPO_TOPLEVEL)/Package.swift $(GIT_REPO_TOPLEVEL)/Sources $(GIT_REPO_TOPLEVEL)/Tests
 
 lint:
 	$(SWIFT_FORMAT_BIN) lint \
 		--configuration $(SWIFT_FORMAT_CONFIG_FILE) \
 		--ignore-unparsable-files \
 		--recursive \
-		.
+		$(GIT_REPO_TOPLEVEL)/Package.swift $(GIT_REPO_TOPLEVEL)/Sources $(GIT_REPO_TOPLEVEL)/Tests
 
 test:
 	swift test --parallel --enable-code-coverage
