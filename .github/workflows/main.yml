@@ -29,7 +29,7 @@ jobs:
             build test
   test-linux:
     runs-on: ubuntu-latest
-    continue-on-error: true
+    if: ${{ false }}  # disable for now
     container:
       image: swift:5.5
     steps:
