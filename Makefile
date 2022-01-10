@@ -1,14 +1,18 @@
+SWIFT_FORMAT_BIN := swift format
+GIT_REPO_TOPLEVEL := $(shell git rev-parse --show-toplevel)
+SWIFT_FORMAT_CONFIG_FILE := $(GIT_REPO_TOPLEVEL)/.swift-format.json
+
 format:
-	swift format \
-		--configuration .swift-format.json \
+	$(SWIFT_FORMAT_BIN) \
+		--configuration $(SWIFT_FORMAT_CONFIG_FILE) \
 		--ignore-unparsable-files \
 		--in-place \
 		--recursive \
 		.
 
 lint:
-	swift format lint \
-		--configuration .swift-format.json \
+	$(SWIFT_FORMAT_BIN) lint \
+		--configuration $(SWIFT_FORMAT_CONFIG_FILE) \
 		--ignore-unparsable-files \
 		--recursive \
 		.
