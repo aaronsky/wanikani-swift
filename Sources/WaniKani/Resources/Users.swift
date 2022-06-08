@@ -129,9 +129,9 @@ extension Resource where Self == Users.Update {
     }
 
     /// Helper method for updating all properties for a user's preferences using
-    /// an existing ``Preferences`` instance.
+    /// an existing ``User/Preferences-swift.struct`` instance.
     ///
-    /// - Parameter preferences: A ``Preferences`` object from an existing ``User`` object.
+    /// - Parameter preferences: A ``User/Preferences-swift.struct`` object from an existing ``User`` object.
     /// - Returns: An updated summary of user information.
     public static func updateUser(preferences: User.Preferences) -> Self {
         Self(
