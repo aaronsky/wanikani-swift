@@ -32,6 +32,7 @@ public enum Subject: ModelProtocol {
     case radical(Radical)
     case kanji(Kanji)
     case vocabulary(Vocabulary)
+    case kana_vocabulary(KanaVocabulary)
 
     public var object: String {
         switch self {
@@ -41,6 +42,8 @@ public enum Subject: ModelProtocol {
             return kanji.object
         case .vocabulary(let vocabulary):
             return vocabulary.object
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.object
         }
     }
 
@@ -52,6 +55,8 @@ public enum Subject: ModelProtocol {
             return kanji.id
         case .vocabulary(let vocabulary):
             return vocabulary.id
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.id
         }
     }
 
@@ -63,6 +68,8 @@ public enum Subject: ModelProtocol {
             return kanji.url
         case .vocabulary(let vocabulary):
             return vocabulary.url
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.url
         }
     }
 
@@ -74,6 +81,8 @@ public enum Subject: ModelProtocol {
             return kanji.lastUpdated
         case .vocabulary(let vocabulary):
             return vocabulary.lastUpdated
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.lastUpdated
         }
     }
 
@@ -101,6 +110,8 @@ public enum Subject: ModelProtocol {
             self = try .kanji(Kanji(from: decoder))
         case .vocabulary:
             self = try .vocabulary(Vocabulary(from: decoder))
+        case .kana_vocabulary:
+            self = try .kana_vocabulary(KanaVocabulary(from: decoder))
         }
     }
 
@@ -112,6 +123,8 @@ public enum Subject: ModelProtocol {
             try kanji.encode(to: encoder)
         case .vocabulary(let vocabulary):
             try vocabulary.encode(to: encoder)
+        case .kana_vocabulary(let kanaVocabulary):
+            try kanaVocabulary.encode(to: encoder)
         }
     }
 
@@ -120,6 +133,7 @@ public enum Subject: ModelProtocol {
         case radical
         case kanji
         case vocabulary
+        case kana_vocabulary
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -137,6 +151,8 @@ extension Subject: SubjectProtocol {
             return kanji.auxiliaryMeanings
         case .vocabulary(let vocabulary):
             return vocabulary.auxiliaryMeanings
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.auxiliaryMeanings
         }
     }
 
@@ -148,6 +164,8 @@ extension Subject: SubjectProtocol {
             return kanji.created
         case .vocabulary(let vocabulary):
             return vocabulary.created
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.created
         }
     }
 
@@ -159,6 +177,8 @@ extension Subject: SubjectProtocol {
             return kanji.documentURL
         case .vocabulary(let vocabulary):
             return vocabulary.documentURL
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.documentURL
         }
     }
 
@@ -170,6 +190,8 @@ extension Subject: SubjectProtocol {
             return kanji.hidden
         case .vocabulary(let vocabulary):
             return vocabulary.hidden
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.hidden
         }
     }
 
@@ -181,6 +203,8 @@ extension Subject: SubjectProtocol {
             return kanji.lessonPosition
         case .vocabulary(let vocabulary):
             return vocabulary.lessonPosition
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.lessonPosition
         }
     }
 
@@ -192,6 +216,8 @@ extension Subject: SubjectProtocol {
             return kanji.level
         case .vocabulary(let vocabulary):
             return vocabulary.level
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.level
         }
     }
 
@@ -203,6 +229,8 @@ extension Subject: SubjectProtocol {
             return kanji.meaningMnemonic
         case .vocabulary(let vocabulary):
             return vocabulary.meaningMnemonic
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.meaningMnemonic
         }
     }
 
@@ -214,6 +242,8 @@ extension Subject: SubjectProtocol {
             return kanji.meanings
         case .vocabulary(let vocabulary):
             return vocabulary.meanings
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.meanings
         }
     }
 
@@ -225,6 +255,8 @@ extension Subject: SubjectProtocol {
             return kanji.slug
         case .vocabulary(let vocabulary):
             return vocabulary.slug
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.slug
         }
     }
 
@@ -236,6 +268,8 @@ extension Subject: SubjectProtocol {
             return kanji.spacedRepetitionSystemID
         case .vocabulary(let vocabulary):
             return vocabulary.spacedRepetitionSystemID
+        case .kana_vocabulary(let kanaVocabulary):
+            return kanaVocabulary.spacedRepetitionSystemID
         }
     }
 }
@@ -971,6 +1005,262 @@ public struct Vocabulary: ModelProtocol, SubjectProtocol {
             url: URL,
             contentType: String,
             metadata: Vocabulary.PronunciationAudio.Metadata
+        ) {
+            self.url = url
+            self.contentType = contentType
+            self.metadata = metadata
+        }
+
+        public struct Metadata: Codable, Hashable {
+            /// The gender of the voice actor.
+            public var gender: String
+            /// A unique ID shared between same source pronunciation audio.
+            public var sourceID: Int
+            /// Vocabulary being pronounced in kana.
+            public var pronunciation: String
+            /// A unique ID belonging to the voice actor.
+            public var voiceActorID: Int
+            /// Humanized name of the voice actor.
+            public var voiceActorName: String
+            /// Description of the voice.
+            public var voiceDescription: String
+
+            public init(
+                gender: String,
+                sourceID: Int,
+                pronunciation: String,
+                voiceActorID: Int,
+                voiceActorName: String,
+                voiceDescription: String
+            ) {
+                self.gender = gender
+                self.sourceID = sourceID
+                self.pronunciation = pronunciation
+                self.voiceActorID = voiceActorID
+                self.voiceActorName = voiceActorName
+                self.voiceDescription = voiceDescription
+            }
+
+            private enum CodingKeys: String, CodingKey {
+                case gender
+                case sourceID = "source_id"
+                case pronunciation
+                case voiceActorID = "voice_actor_id"
+                case voiceActorName = "voice_actor_name"
+                case voiceDescription = "voice_description"
+            }
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case url
+            case contentType = "content_type"
+            case metadata
+        }
+    }
+
+    public struct Reading: Codable, Hashable {
+        /// A singular subject reading.
+        public var reading: String
+        /// Indicates priority in the WaniKani system.
+        public var isPrimary: Bool
+        /// Indicates if the reading is used to evaluate user input for correctness.
+        public var isAcceptedAnswer: Bool
+
+        public init(
+            reading: String,
+            isPrimary: Bool,
+            isAcceptedAnswer: Bool
+        ) {
+            self.reading = reading
+            self.isPrimary = isPrimary
+            self.isAcceptedAnswer = isAcceptedAnswer
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case reading
+            case isPrimary = "primary"
+            case isAcceptedAnswer = "accepted_answer"
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case auxiliaryMeanings = "auxiliary_meanings"
+        case characters
+        case componentSubjectIDs = "component_subject_ids"
+        case contextSentences = "context_sentences"
+        case created = "created_at"
+        case documentURL = "document_url"
+        case hidden = "hidden_at"
+        case lessonPosition = "lesson_position"
+        case level
+        case meaningMnemonic = "meaning_mnemonic"
+        case meanings
+        case partsOfSpeech = "parts_of_speech"
+        case pronunciationAudios = "pronunciation_audios"
+        case readings
+        case readingMnemonic = "reading_mnemonic"
+        case slug
+        case spacedRepetitionSystemID = "spaced_repetition_system_id"
+    }
+}
+
+public struct KanaVocabulary: ModelProtocol, SubjectProtocol {
+    public let object = "kana_vocabulary"
+
+    public var auxiliaryMeanings: [AuxiliaryMeaning]
+    /// The UTF-8 characters for the subject.
+    public var characters: String
+    /// A collection of context sentences.
+    public var contextSentences: [ContextSentence]
+    public var created: Date
+    public var documentURL: URL
+    public var hidden: Date?
+    public var id: Int
+    public var lastUpdated: Date?
+    public var lessonPosition: Int
+    public var level: Int
+    /// The subject's meaning mnemonic.
+    public var meaningMnemonic: String
+    public var meanings: [Meaning]
+    /// Parts of speech.
+    public var partsOfSpeech: [String]
+    /// A collection of pronunciation audio.
+    public var pronunciationAudios: [PronunciationAudio]
+    public var slug: String
+    public var spacedRepetitionSystemID: Int
+    public var url: URL
+
+    public init(
+        auxiliaryMeanings: [AuxiliaryMeaning],
+        characters: String,
+        contextSentences: [ContextSentence],
+        created: Date,
+        documentURL: URL,
+        hidden: Date? = nil,
+        id: Int,
+        lastUpdated: Date? = nil,
+        lessonPosition: Int,
+        level: Int,
+        meaningMnemonic: String,
+        meanings: [Meaning],
+        partsOfSpeech: [String],
+        pronunciationAudios: [PronunciationAudio],
+        slug: String,
+        spacedRepetitionSystemID: Int,
+        url: URL
+    ) {
+        self.auxiliaryMeanings = auxiliaryMeanings
+        self.characters = characters
+        self.contextSentences = contextSentences
+        self.created = created
+        self.documentURL = documentURL
+        self.hidden = hidden
+        self.id = id
+        self.lastUpdated = lastUpdated
+        self.lessonPosition = lessonPosition
+        self.level = level
+        self.meaningMnemonic = meaningMnemonic
+        self.meanings = meanings
+        self.partsOfSpeech = partsOfSpeech
+        self.pronunciationAudios = pronunciationAudios
+        self.slug = slug
+        self.spacedRepetitionSystemID = spacedRepetitionSystemID
+        self.url = url
+    }
+
+    public init(
+        from decoder: Decoder
+    ) throws {
+        let modelContainer = try decoder.container(keyedBy: ModelCodingKeys.self)
+
+        let object = try modelContainer.decode(String.self, forKey: .object)
+        guard object == self.object else {
+            throw DecodingError.typeMismatch(
+                Self.self,
+                DecodingError.Context(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Expected to decode \(self.object) but found object with resource type \(object)"
+                )
+            )
+        }
+
+        id = try modelContainer.decode(Int.self, forKey: .id)
+        lastUpdated = try modelContainer.decodeIfPresent(Date.self, forKey: .lastUpdated)
+        url = try modelContainer.decode(URL.self, forKey: .url)
+
+        let container = try modelContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
+
+        auxiliaryMeanings = try container.decode([AuxiliaryMeaning].self, forKey: .auxiliaryMeanings)
+        characters = try container.decode(String.self, forKey: .characters)
+        contextSentences = try container.decode([ContextSentence].self, forKey: .contextSentences)
+        created = try container.decode(Date.self, forKey: .created)
+        documentURL = try container.decode(URL.self, forKey: .documentURL)
+        hidden = try container.decodeIfPresent(Date.self, forKey: .hidden)
+        lessonPosition = try container.decode(Int.self, forKey: .lessonPosition)
+        level = try container.decode(Int.self, forKey: .level)
+        meaningMnemonic = try container.decode(String.self, forKey: .meaningMnemonic)
+        meanings = try container.decode([Meaning].self, forKey: .meanings)
+        partsOfSpeech = try container.decode([String].self, forKey: .partsOfSpeech)
+        pronunciationAudios = try container.decode([PronunciationAudio].self, forKey: .pronunciationAudios)
+        slug = try container.decode(String.self, forKey: .slug)
+        spacedRepetitionSystemID = try container.decode(Int.self, forKey: .spacedRepetitionSystemID)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var modelContainer = encoder.container(keyedBy: ModelCodingKeys.self)
+
+        try modelContainer.encode(id, forKey: .id)
+        try modelContainer.encode(object, forKey: .object)
+        try modelContainer.encodeIfPresent(lastUpdated, forKey: .lastUpdated)
+        try modelContainer.encode(url, forKey: .url)
+
+        var container = modelContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
+        try container.encode(auxiliaryMeanings, forKey: .auxiliaryMeanings)
+        try container.encode(characters, forKey: .characters)
+        try container.encode(contextSentences, forKey: .contextSentences)
+        try container.encode(created, forKey: .created)
+        try container.encode(documentURL, forKey: .documentURL)
+        try container.encode(hidden, forKey: .hidden)
+        try container.encode(lessonPosition, forKey: .lessonPosition)
+        try container.encode(level, forKey: .level)
+        try container.encode(meaningMnemonic, forKey: .meaningMnemonic)
+        try container.encode(meanings, forKey: .meanings)
+        try container.encode(partsOfSpeech, forKey: .partsOfSpeech)
+        try container.encode(pronunciationAudios, forKey: .pronunciationAudios)
+        try container.encode(slug, forKey: .slug)
+        try container.encode(spacedRepetitionSystemID, forKey: .spacedRepetitionSystemID)
+    }
+
+    public struct ContextSentence: Codable, Hashable {
+        public var englishSentence: String
+        public var japaneseSentence: String
+
+        public init(
+            english: String,
+            japanese: String
+        ) {
+            self.englishSentence = english
+            self.japaneseSentence = japanese
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case englishSentence = "en"
+            case japaneseSentence = "ja"
+        }
+    }
+
+    public struct PronunciationAudio: Codable, Hashable {
+        /// The location of the audio.
+        public var url: URL
+        /// The content type of the audio. Currently the API delivers `audio/mpeg` and `audio/ogg`.
+        public var contentType: String
+        /// Details about the pronunciation audio.
+        public var metadata: Metadata
+
+        public init(
+            url: URL,
+            contentType: String,
+            metadata: KanaVocabulary.PronunciationAudio.Metadata
         ) {
             self.url = url
             self.contentType = contentType
