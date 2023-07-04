@@ -116,7 +116,7 @@ public struct WaniKani {
                 return nil
             }
 
-            var keepTrying = false
+            var keepTrying = true
 
             while keepTrying {
                 keepTrying = false
