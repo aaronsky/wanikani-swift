@@ -32,7 +32,7 @@ public enum Subject: ModelProtocol {
     case radical(Radical)
     case kanji(Kanji)
     case vocabulary(Vocabulary)
-    case kana_vocabulary(KanaVocabulary)
+    case kanaVocabulary(KanaVocabulary)
 
     public var object: String {
         switch self {
@@ -42,7 +42,7 @@ public enum Subject: ModelProtocol {
             return kanji.object
         case .vocabulary(let vocabulary):
             return vocabulary.object
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.object
         }
     }
@@ -55,7 +55,7 @@ public enum Subject: ModelProtocol {
             return kanji.id
         case .vocabulary(let vocabulary):
             return vocabulary.id
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.id
         }
     }
@@ -68,7 +68,7 @@ public enum Subject: ModelProtocol {
             return kanji.url
         case .vocabulary(let vocabulary):
             return vocabulary.url
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.url
         }
     }
@@ -81,7 +81,7 @@ public enum Subject: ModelProtocol {
             return kanji.lastUpdated
         case .vocabulary(let vocabulary):
             return vocabulary.lastUpdated
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.lastUpdated
         }
     }
@@ -111,7 +111,7 @@ public enum Subject: ModelProtocol {
         case .vocabulary:
             self = try .vocabulary(Vocabulary(from: decoder))
         case .kana_vocabulary:
-            self = try .kana_vocabulary(KanaVocabulary(from: decoder))
+            self = try .kanaVocabulary(KanaVocabulary(from: decoder))
         }
     }
 
@@ -123,7 +123,7 @@ public enum Subject: ModelProtocol {
             try kanji.encode(to: encoder)
         case .vocabulary(let vocabulary):
             try vocabulary.encode(to: encoder)
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             try kanaVocabulary.encode(to: encoder)
         }
     }
@@ -151,7 +151,7 @@ extension Subject: SubjectProtocol {
             return kanji.auxiliaryMeanings
         case .vocabulary(let vocabulary):
             return vocabulary.auxiliaryMeanings
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.auxiliaryMeanings
         }
     }
@@ -164,7 +164,7 @@ extension Subject: SubjectProtocol {
             return kanji.created
         case .vocabulary(let vocabulary):
             return vocabulary.created
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.created
         }
     }
@@ -177,7 +177,7 @@ extension Subject: SubjectProtocol {
             return kanji.documentURL
         case .vocabulary(let vocabulary):
             return vocabulary.documentURL
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.documentURL
         }
     }
@@ -190,7 +190,7 @@ extension Subject: SubjectProtocol {
             return kanji.hidden
         case .vocabulary(let vocabulary):
             return vocabulary.hidden
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.hidden
         }
     }
@@ -203,7 +203,7 @@ extension Subject: SubjectProtocol {
             return kanji.lessonPosition
         case .vocabulary(let vocabulary):
             return vocabulary.lessonPosition
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.lessonPosition
         }
     }
@@ -216,7 +216,7 @@ extension Subject: SubjectProtocol {
             return kanji.level
         case .vocabulary(let vocabulary):
             return vocabulary.level
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.level
         }
     }
@@ -229,7 +229,7 @@ extension Subject: SubjectProtocol {
             return kanji.meaningMnemonic
         case .vocabulary(let vocabulary):
             return vocabulary.meaningMnemonic
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.meaningMnemonic
         }
     }
@@ -242,7 +242,7 @@ extension Subject: SubjectProtocol {
             return kanji.meanings
         case .vocabulary(let vocabulary):
             return vocabulary.meanings
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.meanings
         }
     }
@@ -255,7 +255,7 @@ extension Subject: SubjectProtocol {
             return kanji.slug
         case .vocabulary(let vocabulary):
             return vocabulary.slug
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.slug
         }
     }
@@ -268,7 +268,7 @@ extension Subject: SubjectProtocol {
             return kanji.spacedRepetitionSystemID
         case .vocabulary(let vocabulary):
             return vocabulary.spacedRepetitionSystemID
-        case .kana_vocabulary(let kanaVocabulary):
+        case .kanaVocabulary(let kanaVocabulary):
             return kanaVocabulary.spacedRepetitionSystemID
         }
     }
