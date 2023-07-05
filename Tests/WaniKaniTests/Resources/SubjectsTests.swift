@@ -154,6 +154,55 @@ extension Vocabulary {
     }
 }
 
+extension KanaVocabulary {
+    init() {
+        self.init(
+            auxiliaryMeanings: [
+                AuxiliaryMeaning(
+                    meaning: "Hi",
+                    type: .allowlist
+                )
+            ],
+            characters: "こんにちは",
+            contextSentences: [
+                ContextSentence(
+                    english: "Hello",
+                    japanese: "こんにちは"
+                )
+            ],
+            created: .testing,
+            documentURL: URL(),
+            id: 0,
+            lessonPosition: 0,
+            level: 1,
+            meaningMnemonic: "Hello",
+            meanings: [
+                Meaning(
+                    meaning: "Hello",
+                    isPrimary: true,
+                    isAcceptedAnswer: true
+                )
+            ],
+            partsOfSpeech: ["expression"],
+            pronunciationAudios: [
+                PronunciationAudio(
+                    url: URL(),
+                    contentType: "audio/ogg",
+                    metadata: PronunciationAudio.Metadata(
+                        gender: "female",
+                        sourceID: 0,
+                        pronunciation: "ground",
+                        voiceActorID: 0,
+                        voiceActorName: "Haruko",
+                        voiceDescription: "Someone who has friends."
+                    )
+                )
+            ],
+            slug: "Hello", spacedRepetitionSystemID: 0, url: URL()
+        )
+    }
+}
+
 class SubjectsTests: XCTestCase {
     func testSubjectList() async throws {
         let expected = ModelCollection(data: [
@@ -162,7 +211,7 @@ class SubjectsTests: XCTestCase {
             Subject.vocabulary(Vocabulary()),
         ])
         let context = try MockContext(content: expected)
-
+        
         let response = try await context.client.send(
             .subjects(
                 ids: [0, 1],
@@ -175,27 +224,35 @@ class SubjectsTests: XCTestCase {
         )
         XCTAssertEqual(response.data, expected)
     }
-
+    
     func testSubjectGetRadical() async throws {
         let expected: Subject = .radical(Radical())
         let context = try MockContext(content: expected)
-
+        
         let response = try await context.client.send(.subject(0))
         XCTAssertEqual(response.data, expected)
     }
-
+    
     func testSubjectGetKanji() async throws {
         let expected: Subject = .kanji(Kanji())
         let context = try MockContext(content: expected)
-
+        
         let response = try await context.client.send(.subject(0))
         XCTAssertEqual(response.data, expected)
     }
-
+    
     func testSubjectGetVocabulary() async throws {
         let expected: Subject = .vocabulary(Vocabulary())
         let context = try MockContext(content: expected)
-
+        
+        let response = try await context.client.send(.subject(0))
+        XCTAssertEqual(response.data, expected)
+    }
+    
+    func testSubjectGetKanaVocabulary() async throws {
+        let expected: Subject = .kanaVocabulary(KanaVocabulary())
+        let context = try MockContext(content: expected)
+        
         let response = try await context.client.send(.subject(0))
         XCTAssertEqual(response.data, expected)
     }
